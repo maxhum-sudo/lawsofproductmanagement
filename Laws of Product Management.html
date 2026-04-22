@@ -1,0 +1,2388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laws of Product Management</title>
+  <meta name="description" content="36 laws, heuristics, and principles that shape how great products are discovered, built, and shipped.">
+  <meta property="og:title" content="Laws of Product Management">
+  <meta property="og:description" content="36 principles that shape how great products are discovered, built, and shipped.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Laws of Product Management">
+  <meta name="twitter:description" content="36 principles that shape how great products are discovered, built, and shipped.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg: #faf9f6;
+      --surface: #ffffff;
+      --surface-raised: #f5f3ef;
+      --text: #18160f;
+      --text-2: #57524a;
+      --text-3: #9e9890;
+      --border: #e8e3da;
+      --border-strong: #ccc7bc;
+      --header-bg: #0f1728;
+      --radius: 10px;
+      --shadow: 0 1px 2px rgba(15,23,40,0.04), 0 3px 10px rgba(15,23,40,0.06);
+      --shadow-hover: 0 8px 28px rgba(15,23,40,0.13), 0 2px 8px rgba(15,23,40,0.07);
+      --t: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+      --t-slow: 280ms cubic-bezier(0.16, 1, 0.3, 1);
+
+      /* Category palettes */
+      --strategy-bg: #eeeaff;   --strategy-fg: #5646f5;   --strategy-hex: 86,70,245;
+      --discovery-bg: #ddf0fc;  --discovery-fg: #0278b8;  --discovery-hex: 2,120,184;
+      --execution-bg: #d2f5e8;  --execution-fg: #0a7a54;  --execution-hex: 10,122,84;
+      --metrics-bg: #fef2c2;    --metrics-fg: #c27c00;    --metrics-hex: 194,124,0;
+      --leadership-bg: #fde4e4; --leadership-fg: #c42020; --leadership-hex: 196,32,32;
+      --gtm-bg: #f0e8ff;        --gtm-fg: #8726d4;        --gtm-hex: 135,38,212;
+      --process-bg: #ccfbf2;    --process-fg: #0a8c7a;    --process-hex: 10,140,122;
+      --users-bg: #fce7f4;      --users-fg: #c0206a;      --users-hex: 192,32,106;
+    }
+
+    /* ── DARK MODE ── */
+    [data-theme="dark"] {
+      --bg: #0d1220;
+      --surface: #141c2e;
+      --surface-raised: #1a2440;
+      --text: #edeae3;
+      --text-2: #9097a8;
+      --text-3: #505868;
+      --border: #232e44;
+      --border-strong: #2e3c58;
+      --header-bg: #080d18;
+      --shadow: 0 1px 2px rgba(0,0,0,0.2), 0 3px 10px rgba(0,0,0,0.3);
+      --shadow-hover: 0 8px 28px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
+
+      --strategy-bg: rgba(86,70,245,0.15);
+      --discovery-bg: rgba(2,120,184,0.15);
+      --execution-bg: rgba(10,122,84,0.15);
+      --metrics-bg: rgba(194,124,0,0.15);
+      --leadership-bg: rgba(196,32,32,0.15);
+      --gtm-bg: rgba(135,38,212,0.15);
+      --process-bg: rgba(10,140,122,0.15);
+      --users-bg: rgba(192,32,106,0.15);
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background var(--t-slow), color var(--t-slow);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--header-bg);
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .header-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 32px;
+      height: 56px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-weight: 700; font-size: 14px; letter-spacing: -0.01em;
+      color: #fff; text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--strategy-fg);
+      flex-shrink: 0;
+    }
+    .logo span { color: rgba(255,255,255,0.35); font-weight: 400; }
+    nav { display: flex; gap: 2px; align-items: center; }
+    nav a {
+      color: rgba(255,255,255,0.5); text-decoration: none;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 6px 12px; border-radius: 6px;
+      transition: color var(--t), background var(--t);
+    }
+    nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+
+    /* Dark mode toggle */
+    #dark-toggle {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.7);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background var(--t), color var(--t), border-color var(--t);
+      flex-shrink: 0; margin-left: 6px;
+    }
+    #dark-toggle:hover { background: rgba(255,255,255,0.12); color: #fff; border-color: rgba(255,255,255,0.22); }
+    #dark-toggle svg { width: 15px; height: 15px; }
+    .icon-moon { display: block; }
+    .icon-sun  { display: none; }
+    [data-theme="dark"] .icon-moon { display: none; }
+    [data-theme="dark"] .icon-sun  { display: block; }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1280px; margin: 0 auto; padding: 72px 32px 52px;
+      position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: "36";
+      position: absolute;
+      right: 24px; top: 50%; transform: translateY(-55%);
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(180px, 18vw, 300px);
+      font-weight: 400;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--border);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.7;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.13em;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 22px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--strategy-fg);
+      flex-shrink: 0;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(40px, 5.5vw, 64px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.06;
+      color: var(--text);
+      max-width: 680px;
+      margin-bottom: 22px;
+    }
+    .hero p {
+      font-size: 17px; color: var(--text-2); max-width: 480px;
+      line-height: 1.75; font-weight: 400;
+    }
+    .hero-stats {
+      display: flex; gap: 44px; margin-top: 48px; padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      display: block;
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 36px; font-weight: 400; letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--text);
+    }
+    .stat-label {
+      font-size: 12px; font-weight: 500; color: var(--text-3);
+      letter-spacing: 0.04em; margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    /* ── CONTROLS ── */
+    .controls {
+      position: sticky; top: 56px; z-index: 90;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .controls::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 60px;
+      background: linear-gradient(to right, transparent, var(--bg));
+      pointer-events: none;
+    }
+    .controls-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 32px;
+      display: flex; align-items: center; gap: 14px;
+      height: 60px; overflow-x: auto; scrollbar-width: none;
+    }
+    .controls-inner::-webkit-scrollbar { display: none; }
+    .filters { display: flex; gap: 4px; flex-shrink: 0; align-items: center; }
+    .filter-divider {
+      width: 1px; height: 18px;
+      background: var(--border-strong);
+      flex-shrink: 0; margin: 0 6px;
+    }
+    .filter-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 13px; border-radius: 100px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text-2); font-size: 13px; font-weight: 500;
+      cursor: pointer; white-space: nowrap; font-family: inherit;
+      transition: all var(--t);
+    }
+    .filter-btn .count { font-size: 11px; font-weight: 600; opacity: 0.5; }
+    .filter-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+    /* Active states — "All" */
+    .filter-btn.active[data-cat="All"] { background: var(--text); border-color: var(--text); color: var(--bg); }
+    /* Active states — categories */
+    .filter-btn.active[data-cat="Strategy"]   { background: var(--strategy-fg);   border-color: var(--strategy-fg);   color: #fff; }
+    .filter-btn.active[data-cat="Discovery"]  { background: var(--discovery-fg);  border-color: var(--discovery-fg);  color: #fff; }
+    .filter-btn.active[data-cat="Execution"]  { background: var(--execution-fg);  border-color: var(--execution-fg);  color: #fff; }
+    .filter-btn.active[data-cat="Metrics"]    { background: var(--metrics-fg);    border-color: var(--metrics-fg);    color: #fff; }
+    .filter-btn.active[data-cat="Leadership"] { background: var(--leadership-fg); border-color: var(--leadership-fg); color: #fff; }
+    .filter-btn.active[data-cat="GTM"]        { background: var(--gtm-fg);        border-color: var(--gtm-fg);        color: #fff; }
+    .filter-btn.active[data-cat="Process"]    { background: var(--process-fg);    border-color: var(--process-fg);    color: #fff; }
+    .filter-btn.active[data-cat="Users"]      { background: var(--users-fg);      border-color: var(--users-fg);      color: #fff; }
+
+    .search-wrap { position: relative; flex-shrink: 0; margin-left: auto; }
+    .search-wrap svg {
+      position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+      color: var(--text-3); pointer-events: none;
+    }
+    .search-input {
+      height: 36px; padding: 0 16px 0 34px;
+      border: 1.5px solid var(--border); border-radius: 6px;
+      background: var(--surface);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+      color: var(--text);
+      font-size: 13px; font-family: inherit; width: 210px;
+      transition: all var(--t); outline: none;
+    }
+    .search-input:focus { border-color: var(--border-strong); width: 260px; box-shadow: inset 0 1px 4px rgba(0,0,0,0.07); }
+    .search-input::placeholder { color: var(--text-3); }
+
+    /* ── GRID ── */
+    .grid-wrap { max-width: 1280px; margin: 0 auto; padding: 36px 32px 80px; }
+    .results-count { font-size: 12px; font-weight: 500; color: var(--text-3); margin-bottom: 22px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── SKELETON ── */
+    @keyframes shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position: 600px 0; }
+    }
+    .skeleton-card {
+      border-radius: var(--radius);
+      height: 185px;
+      background: linear-gradient(90deg, var(--border) 25%, var(--surface) 50%, var(--border) 75%);
+      background-size: 600px 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 24px 24px 22px 28px;
+      cursor: pointer;
+      transition: box-shadow var(--t), transform var(--t), background var(--t);
+      position: relative; overflow: hidden;
+    }
+    /* Left border stripe */
+    .card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; bottom: 0; width: 3px;
+    }
+    .card[data-cat="Strategy"]::before   { background: var(--strategy-fg); }
+    .card[data-cat="Discovery"]::before  { background: var(--discovery-fg); }
+    .card[data-cat="Execution"]::before  { background: var(--execution-fg); }
+    .card[data-cat="Metrics"]::before    { background: var(--metrics-fg); }
+    .card[data-cat="Leadership"]::before { background: var(--leadership-fg); }
+    .card[data-cat="GTM"]::before        { background: var(--gtm-fg); }
+    .card[data-cat="Process"]::before    { background: var(--process-fg); }
+    .card[data-cat="Users"]::before      { background: var(--users-fg); }
+
+    /* Hover wash */
+    .card::after {
+      content: ''; position: absolute; inset: 0;
+      opacity: 0; transition: opacity var(--t);
+      pointer-events: none;
+    }
+    .card[data-cat="Strategy"]::after   { background: rgba(var(--strategy-hex), 0.04); }
+    .card[data-cat="Discovery"]::after  { background: rgba(var(--discovery-hex), 0.04); }
+    .card[data-cat="Execution"]::after  { background: rgba(var(--execution-hex), 0.04); }
+    .card[data-cat="Metrics"]::after    { background: rgba(var(--metrics-hex), 0.04); }
+    .card[data-cat="Leadership"]::after { background: rgba(var(--leadership-hex), 0.04); }
+    .card[data-cat="GTM"]::after        { background: rgba(var(--gtm-hex), 0.04); }
+    .card[data-cat="Process"]::after    { background: rgba(var(--process-hex), 0.04); }
+    .card[data-cat="Users"]::after      { background: rgba(var(--users-hex), 0.04); }
+
+    .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .card:hover::after { opacity: 1; }
+
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+
+    /* Icon in colored rounded square */
+    .card-icon {
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; line-height: 1;
+      border-radius: 11px;
+      flex-shrink: 0;
+    }
+    .card[data-cat="Strategy"]   .card-icon { background: var(--strategy-bg); }
+    .card[data-cat="Discovery"]  .card-icon { background: var(--discovery-bg); }
+    .card[data-cat="Execution"]  .card-icon { background: var(--execution-bg); }
+    .card[data-cat="Metrics"]    .card-icon { background: var(--metrics-bg); }
+    .card[data-cat="Leadership"] .card-icon { background: var(--leadership-bg); }
+    .card[data-cat="GTM"]        .card-icon { background: var(--gtm-bg); }
+    .card[data-cat="Process"]    .card-icon { background: var(--process-bg); }
+    .card[data-cat="Users"]      .card-icon { background: var(--users-bg); }
+
+    .card-num { font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: 0.05em; margin-top: 4px; }
+    .cat-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 4px; margin-bottom: 10px;
+    }
+    .card[data-cat="Strategy"]   .cat-badge { background: var(--strategy-bg);   color: var(--strategy-fg); }
+    .card[data-cat="Discovery"]  .cat-badge { background: var(--discovery-bg);  color: var(--discovery-fg); }
+    .card[data-cat="Execution"]  .cat-badge { background: var(--execution-bg);  color: var(--execution-fg); }
+    .card[data-cat="Metrics"]    .cat-badge { background: var(--metrics-bg);    color: var(--metrics-fg); }
+    .card[data-cat="Leadership"] .cat-badge { background: var(--leadership-bg); color: var(--leadership-fg); }
+    .card[data-cat="GTM"]        .cat-badge { background: var(--gtm-bg);        color: var(--gtm-fg); }
+    .card[data-cat="Process"]    .cat-badge { background: var(--process-bg);    color: var(--process-fg); }
+    .card[data-cat="Users"]      .cat-badge { background: var(--users-bg);      color: var(--users-fg); }
+
+    .card-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 19px; font-weight: 400;
+      letter-spacing: -0.02em; line-height: 1.25;
+      margin-bottom: 8px; color: var(--text);
+    }
+    .card-short { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
+    .card-cta {
+      display: flex; align-items: center; gap: 5px;
+      margin-top: 18px; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.03em; color: var(--text-3);
+    }
+    .card-cta svg { transition: transform var(--t); }
+    .card:hover .card-cta svg { transform: translateX(4px); }
+
+    /* Modal prev/next navigation */
+    .modal-nav-btn {
+      position: relative; z-index: 2;
+      flex-shrink: 0;
+      width: 44px; height: 44px; border-radius: 12px;
+      border: 1.5px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.75);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--t);
+    }
+    .modal-nav-btn:hover:not(:disabled) {
+      background: rgba(255,255,255,0.16);
+      border-color: rgba(255,255,255,0.28);
+      color: #fff;
+    }
+    .modal-nav-btn:disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+    .modal-nav-btn svg { width: 18px; height: 18px; }
+
+    @media (max-width: 768px) {
+      .modal-nav-btn { display: none; }
+    }
+
+    /* Mobile modal affordances (hint + counter) */
+    #modal-swipe-hint,
+    #modal-counter {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--t), transform var(--t);
+      z-index: 260;
+    }
+    .modal-toast {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(15,23,40,0.65);
+      backdrop-filter: blur(10px);
+      color: rgba(255,255,255,0.92);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    #modal-swipe-hint.show,
+    #modal-counter.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    #modal-swipe-hint { bottom: 22px; }
+    #modal-counter {
+      top: calc(env(safe-area-inset-top, 0px) + 14px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #modal-swipe-hint,
+      #modal-counter {
+        transition: none;
+      }
+    }
+
+    /* ── QUIZ ── */
+    .quiz-overlay {
+      position: fixed; inset: 0; z-index: 260;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 200ms ease;
+    }
+    .quiz-overlay.open { opacity: 1; pointer-events: all; }
+    .quiz-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(8,13,24,0.62); backdrop-filter: blur(6px);
+    }
+    .quiz-box {
+      position: relative; z-index: 1;
+      width: min(720px, 100%);
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.28), 0 4px 16px rgba(0,0,0,0.12);
+      overflow: hidden;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .quiz-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .quiz-title { font-weight: 700; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-3); }
+    .quiz-close {
+      width: 32px; height: 32px; border-radius: 10px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text-2); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--t);
+    }
+    .quiz-close:hover { background: var(--surface-raised); color: var(--text); border-color: var(--border-strong); }
+    .quiz-body { padding: 16px; overflow: auto; }
+    .quiz-progress { font-size: 12px; color: var(--text-3); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px; }
+    .quiz-question { font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.35; margin-bottom: 14px; }
+    .quiz-choices { display: grid; gap: 10px; margin-bottom: 16px; }
+    .quiz-choice {
+      text-align: left;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 550;
+      line-height: 1.4;
+      transition: all var(--t);
+    }
+    .quiz-choice:hover { border-color: var(--border-strong); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02); transform: translateY(-1px); }
+    .quiz-choice.correct { border-color: rgba(10,122,84,0.35); background: rgba(10,122,84,0.08); }
+    .quiz-choice.wrong { border-color: rgba(196,32,32,0.35); background: rgba(196,32,32,0.07); }
+    .quiz-confidence-label { font-size: 12px; color: var(--text-3); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px; }
+    .quiz-confidence-buttons { display: flex; gap: 8px; }
+    .quiz-btn {
+      flex: 1;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--surface-raised);
+      color: var(--text);
+      font-weight: 650;
+      cursor: pointer;
+      transition: all var(--t);
+    }
+    .quiz-btn:hover { border-color: var(--border-strong); }
+    .quiz-footer { margin-top: 14px; font-size: 13px; color: var(--text-2); line-height: 1.6; }
+    .quiz-done-btn {
+      display: block; width: 100%; margin-top: 14px;
+      padding: 11px; border-radius: 12px;
+      border: 1.5px solid var(--border-strong);
+      background: var(--text); color: var(--bg);
+      font-size: 13px; font-weight: 650; font-family: inherit;
+      cursor: pointer; transition: opacity var(--t);
+    }
+    .quiz-done-btn:hover { opacity: 0.85; }
+    .quiz-done-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .quiz-start-count {
+      font-size: 12px; color: var(--text-3); font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .quiz-start-desc {
+      font-size: 14px; color: var(--text-2); line-height: 1.55;
+      margin-bottom: 14px;
+    }
+    .quiz-law-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 4px 14px;
+      max-height: 340px;
+      overflow: auto;
+      padding: 4px 8px 4px 0;
+      margin-bottom: 4px;
+    }
+    .quiz-law-row {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: var(--text-3);
+      padding: 5px 0;
+      line-height: 1.3;
+    }
+    .quiz-law-row.seen { color: var(--text); }
+    .quiz-law-check {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 1.5px solid var(--border-strong);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: transparent;
+      transition: all var(--t);
+    }
+    .quiz-law-row.seen .quiz-law-check {
+      background: var(--execution-fg);
+      border-color: var(--execution-fg);
+    }
+    .quiz-law-check svg { color: #fff; display: none; }
+    .quiz-law-row.seen .quiz-law-check svg { display: block; }
+
+    /* Review prompt toast */
+    #review-prompt {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%) translateY(8px);
+      width: min(720px, calc(100vw - 24px));
+      z-index: 255;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--t), transform var(--t);
+    }
+    #review-prompt.open {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: all;
+    }
+    .review-prompt-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(15,23,40,0.72);
+      backdrop-filter: blur(10px);
+      color: rgba(255,255,255,0.92);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+    }
+    .review-prompt-text { font-weight: 650; font-size: 13px; }
+    .review-prompt-sub { font-size: 12px; font-weight: 500; opacity: 0.7; margin-top: 2px; }
+    .review-prompt-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .review-prompt-btn {
+      border-radius: 12px;
+      padding: 9px 12px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.92);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--t);
+      white-space: nowrap;
+    }
+    .review-prompt-btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.26); }
+    .review-prompt-btn.primary {
+      background: rgba(86,70,245,0.85);
+      border-color: rgba(86,70,245,0.9);
+    }
+    .review-prompt-btn.primary:hover { background: rgba(86,70,245,0.95); }
+
+    @media (max-width: 768px) {
+      .quiz-overlay { align-items: flex-end; padding: 0; }
+      .quiz-box {
+        border-radius: 20px 20px 0 0;
+        max-height: 92vh;
+      }
+      .review-prompt-inner { flex-direction: column; align-items: stretch; }
+      .review-prompt-actions { width: 100%; }
+    }
+
+    /* ── TABLE OF CONTENTS OVERLAY ── */
+    #toc-overlay {
+      position: fixed; inset: 0; z-index: 150;
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #toc-overlay.open { opacity: 1; pointer-events: all; }
+    #toc-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(8,13,24,0.55); backdrop-filter: blur(6px);
+    }
+    #toc-panel {
+      position: relative; z-index: 1;
+      background: var(--bg);
+      width: min(680px, 100%);
+      height: 100%;
+      margin-left: auto;
+      overflow-y: auto;
+      box-shadow: -24px 0 80px rgba(0,0,0,0.18);
+      transform: translateX(40px);
+      transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #toc-overlay.open #toc-panel { transform: translateX(0); }
+    #toc-head {
+      position: sticky; top: 0; z-index: 10;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    #toc-head h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 22px; font-weight: 400; letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    #toc-close {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text-2); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--t);
+    }
+    #toc-close:hover { background: var(--surface-raised); color: var(--text); }
+    #toc-body { padding: 28px 32px 60px; }
+    .toc-category { margin-bottom: 36px; }
+    .toc-category-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .toc-category-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 9px; border-radius: 4px;
+    }
+    .toc-category-count { font-size: 12px; color: var(--text-3); }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+    .toc-item {
+      display: flex; align-items: baseline; gap: 14px;
+      padding: 9px 12px; border-radius: 8px;
+      cursor: pointer; transition: background var(--t);
+      text-align: left; background: none; border: none; font-family: inherit;
+      width: 100%;
+    }
+    .toc-item:hover { background: var(--surface-raised); }
+    .toc-num {
+      font-size: 11px; font-weight: 600; color: var(--text-3);
+      letter-spacing: 0.04em; flex-shrink: 0; width: 28px; text-align: right;
+    }
+    .toc-title {
+      font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.3;
+      text-align: left;
+    }
+    .toc-short {
+      font-size: 12px; color: var(--text-3); line-height: 1.4;
+      margin-top: 2px; text-align: left;
+    }
+    .toc-item-inner { flex: 1; min-width: 0; }
+
+    @media (max-width: 768px) {
+      #toc-panel { width: 100%; }
+      #toc-head { padding: 16px 20px; }
+      #toc-body { padding: 20px 20px 60px; }
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; padding: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 200ms ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(8,13,24,0.6); backdrop-filter: blur(6px);
+      pointer-events: none;
+    }
+    .modal-box {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border-radius: 16px; max-width: 640px; width: 100%; max-height: 88vh;
+      overflow-y: auto; scrollbar-gutter: stable;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.28), 0 4px 16px rgba(0,0,0,0.12);
+      transform: perspective(1000px) rotateX(2deg) translateY(24px) scale(0.97);
+      transition: transform var(--t-slow);
+    }
+    .modal-overlay.open .modal-box {
+      transform: perspective(1000px) rotateX(0deg) translateY(0) scale(1);
+    }
+
+    /* Modal header band */
+    .modal-head {
+      padding: 0; position: sticky; top: 0; z-index: 5;
+    }
+    .modal-band {
+      height: 10px;
+      position: relative;
+    }
+    .modal-box[data-cat="Strategy"]   .modal-band { background: linear-gradient(135deg, rgba(86,70,245,0.18), rgba(86,70,245,0.08)); }
+    .modal-box[data-cat="Discovery"]  .modal-band { background: linear-gradient(135deg, rgba(2,120,184,0.18), rgba(2,120,184,0.08)); }
+    .modal-box[data-cat="Execution"]  .modal-band { background: linear-gradient(135deg, rgba(10,122,84,0.18), rgba(10,122,84,0.08)); }
+    .modal-box[data-cat="Metrics"]    .modal-band { background: linear-gradient(135deg, rgba(194,124,0,0.18), rgba(194,124,0,0.08)); }
+    .modal-box[data-cat="Leadership"] .modal-band { background: linear-gradient(135deg, rgba(196,32,32,0.18), rgba(196,32,32,0.08)); }
+    .modal-box[data-cat="GTM"]        .modal-band { background: linear-gradient(135deg, rgba(135,38,212,0.18), rgba(135,38,212,0.08)); }
+    .modal-box[data-cat="Process"]    .modal-band { background: linear-gradient(135deg, rgba(10,140,122,0.18), rgba(10,140,122,0.08)); }
+    .modal-box[data-cat="Users"]      .modal-band { background: linear-gradient(135deg, rgba(192,32,106,0.18), rgba(192,32,106,0.08)); }
+
+    /* Accent strip at top of band */
+    .modal-band::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      border-radius: 16px 16px 0 0;
+    }
+    .modal-box[data-cat="Strategy"]   .modal-band::before { background: var(--strategy-fg); }
+    .modal-box[data-cat="Discovery"]  .modal-band::before { background: var(--discovery-fg); }
+    .modal-box[data-cat="Execution"]  .modal-band::before { background: var(--execution-fg); }
+    .modal-box[data-cat="Metrics"]    .modal-band::before { background: var(--metrics-fg); }
+    .modal-box[data-cat="Leadership"] .modal-band::before { background: var(--leadership-fg); }
+    .modal-box[data-cat="GTM"]        .modal-band::before { background: var(--gtm-fg); }
+    .modal-box[data-cat="Process"]    .modal-band::before { background: var(--process-fg); }
+    .modal-box[data-cat="Users"]      .modal-band::before { background: var(--users-fg); }
+
+    .modal-band-icon { display: none; }
+
+    .modal-head-body { padding: 20px 30px 0; }
+
+    .modal-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .modal-title {
+      flex: 1;
+      min-width: 0;
+    }
+    .modal-title-nav {
+      display: inline-flex;
+      gap: 6px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .modal-title-nav-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--surface-raised);
+      color: var(--text-2);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--t);
+    }
+    .modal-title-nav-btn:hover:not(:disabled) {
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+    .modal-title-nav-btn:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+    .modal-title-nav-btn svg { width: 18px; height: 18px; }
+
+    .modal-close {
+      position: absolute; top: 14px; right: 14px; z-index: 1;
+      width: 32px; height: 32px; border-radius: 50%;
+      border: none; background: rgba(255,255,255,0.18); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text); backdrop-filter: blur(4px);
+      transition: background var(--t);
+    }
+    [data-theme="dark"] .modal-close { background: rgba(255,255,255,0.1); color: var(--text); }
+    .modal-close:hover { background: rgba(255,255,255,0.28); }
+
+    .modal-icon { display: none; } /* hidden — icon moved to band */
+    .modal-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .modal-num { font-size: 12px; font-weight: 600; color: var(--text-3); letter-spacing: 0.06em; }
+    .modal-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(26px, 4.5vw, 36px);
+      font-weight: 400; letter-spacing: -0.03em; line-height: 1.1;
+      color: var(--text); margin-bottom: 10px;
+    }
+    .modal-tagline {
+      font-size: 15px; color: var(--text-2); line-height: 1.65;
+      font-style: italic; padding-bottom: 0;
+    }
+    .modal-divider { height: 1px; background: var(--border); margin: 22px 30px; }
+    .modal-body { padding: 0 30px 30px; }
+    .modal-section { margin-bottom: 28px; }
+    .modal-section:last-child { margin-bottom: 0; }
+    .section-label {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.13em;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; height: 1px; background: var(--border);
+    }
+    .modal-section p { font-size: 15px; color: var(--text-2); line-height: 1.75; }
+    .see-also-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 500; color: var(--text-2);
+      border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 9px 14px; cursor: pointer; transition: all var(--t);
+      background: var(--surface-raised); font-family: inherit;
+    }
+    .see-also-btn:hover { border-color: var(--border-strong); color: var(--text); }
+    .see-also-btn svg { transition: transform var(--t); }
+    .see-also-btn:hover svg { transform: translateX(3px); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      grid-column: 1/-1; text-align: center;
+      padding: 80px 32px; color: var(--text-3);
+      font-size: 15px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--header-bg);
+      padding: 40px 32px;
+      border-top: 3px solid var(--strategy-fg);
+    }
+    .footer-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-brand { font-weight: 700; font-size: 13px; color: rgba(255,255,255,0.75); }
+    .footer-brand span { font-weight: 400; color: rgba(255,255,255,0.3); }
+    .footer-text { font-size: 13px; color: rgba(255,255,255,0.35); }
+    .footer-text a { color: rgba(255,255,255,0.35); text-decoration: underline; }
+    .footer-text a:hover { color: rgba(255,255,255,0.65); }
+
+    /* ── TWEAKS PANEL ── */
+    #tweaks-panel {
+      display: none;
+      position: fixed; bottom: 24px; right: 24px; z-index: 300;
+      font-size: 13px;
+    }
+    /* Collapsed fab */
+    #tweaks-fab {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--header-bg);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.75);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+      transition: background var(--t), box-shadow var(--t), transform var(--t);
+      margin-left: auto;
+    }
+    #tweaks-fab:hover { background: #1c2a44; box-shadow: 0 6px 24px rgba(0,0,0,0.3); transform: translateY(-1px); }
+    #tweaks-fab svg { width: 16px; height: 16px; }
+    /* Expanded tray */
+    #tweaks-tray {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      padding: 16px 18px 18px;
+      width: 220px;
+      margin-bottom: 10px;
+      transform-origin: bottom right;
+      transform: scale(0.92) translateY(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform var(--t), opacity var(--t);
+    }
+    #tweaks-panel.open #tweaks-tray {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    #tweaks-panel.open #tweaks-fab {
+      background: #1c2a44;
+      transform: rotate(45deg);
+    }
+    #tweaks-tray h4 {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 13px;
+    }
+    .tweak-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 11px; color: var(--text-2);
+    }
+    .tweak-row:last-child { margin-bottom: 0; }
+    .tweak-toggle {
+      width: 36px; height: 20px; border-radius: 10px;
+      background: var(--border); border: none; cursor: pointer;
+      position: relative; transition: background var(--t); flex-shrink: 0;
+    }
+    .tweak-toggle::after {
+      content: ''; position: absolute;
+      top: 3px; left: 3px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: white;
+      transition: transform var(--t);
+    }
+    .tweak-toggle.on { background: var(--strategy-fg); }
+    .tweak-toggle.on::after { transform: translateX(16px); }
+    .tweak-select {
+      background: var(--surface-raised); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 8px;
+      font-size: 12px; color: var(--text); font-family: inherit;
+      cursor: pointer;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { padding: 44px 20px 36px; }
+      .hero h1 { font-size: 28px; }
+      .hero::after { display: none; }
+      .hero-stats { gap: 28px; }
+      .controls-inner { padding: 0 20px; }
+      .grid-wrap { padding: 24px 20px 60px; }
+      .grid { grid-template-columns: 1fr; }
+      .header-inner { padding: 0 20px; }
+      nav a:not(:last-child) { display: none; }
+
+      /* Full-screen slide-up sheet on mobile */
+      .modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+      .modal-box {
+        border-radius: 20px 20px 0 0;
+        max-height: 92vh;
+        width: 100%;
+        max-width: 100%;
+        transform: translateY(100%);
+      }
+      .modal-overlay.open .modal-box {
+        transform: translateY(0);
+        transition: transform var(--t-slow);
+      }
+      .modal-band { border-radius: 20px 20px 0 0; }
+      .modal-band::before { border-radius: 20px 20px 0 0; }
+
+      /* Let the header content scroll; keep only the close button fixed */
+      .modal-head { position: static; }
+      .modal-close {
+        position: fixed;
+        top: calc(env(safe-area-inset-top, 0px) + 12px);
+        right: 12px;
+        z-index: 250;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">Laws of Product Management <span>— 36 Principles</span></a>
+    <nav>
+      <a href="#" id="toc-link">Contents</a>
+      <a href="#" id="quiz-link">Quiz</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="hero-eyebrow">A Reference</div>
+    <h1>Laws of Product Management</h1>
+    <p>36 principles, heuristics, and hard-won laws that shape how great products are discovered, built, and shipped.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num" id="stat-laws">36</span>
+        <span class="stat-label">Laws &amp; Principles</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-cats">8</span>
+        <span class="stat-label">Categories</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">50+</span>
+        <span class="stat-label">Years of research</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="controls-inner">
+      <div class="filters" id="filters"></div>
+      <div class="search-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-input" id="search" type="search" placeholder="Search laws…" aria-label="Search laws">
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-wrap">
+    <div class="results-count" id="results-count"></div>
+    <div class="grid" id="grid">
+      <!-- Skeleton placeholders shown before JS renders -->
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </div>
+</main>
+
+<footer id="about">
+  <div class="footer-inner">
+    <div class="footer-brand">Laws of Product Management <span>— An open reference</span></div>
+    <div class="footer-text">Inspired by <a href="https://lawsofsoftwareengineering.com" target="_blank" rel="noopener">lawsofsoftwareengineering.com</a></div>
+  </div>
+</footer>
+
+<!-- TABLE OF CONTENTS -->
+<div id="toc-overlay" role="dialog" aria-modal="true" aria-label="Table of Contents">
+  <div id="toc-backdrop"></div>
+  <div id="toc-panel">
+    <div id="toc-head">
+      <h2>Table of Contents</h2>
+      <button id="toc-close" aria-label="Close contents">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="toc-body"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+  <div id="modal-counter" aria-hidden="true"><div class="modal-toast" id="modal-counter-inner"></div></div>
+  <div id="modal-swipe-hint" aria-hidden="true">
+    <div class="modal-toast">Swipe from the edge to navigate</div>
+  </div>
+  <button class="modal-nav-btn" id="modal-prev" aria-label="Previous law" disabled>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <div class="modal-box" id="modal-box">
+    <div class="modal-head" id="modal-head">
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <!-- New band element (accent color header) -->
+      <div class="modal-band">
+        <span class="modal-band-icon" id="modal-icon" aria-hidden="true"></span>
+      </div>
+      <div class="modal-head-body">
+        <div class="modal-meta">
+          <span class="modal-num" id="modal-num"></span>
+          <span class="cat-badge" id="modal-cat-badge"></span>
+        </div>
+        <div class="modal-title-row">
+          <h2 class="modal-title" id="modal-title"></h2>
+          <div class="modal-title-nav" aria-label="Navigate laws">
+            <button class="modal-title-nav-btn" id="modal-prev-title" type="button" aria-label="Previous law">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="modal-title-nav-btn" id="modal-next-title" type="button" aria-label="Next law">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+        <p class="modal-tagline" id="modal-tagline"></p>
+      </div>
+    </div>
+    <div class="modal-divider"></div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="section-label">The Law</div>
+        <p id="m-long"></p>
+      </div>
+      <div class="modal-section">
+        <div class="section-label">Origin</div>
+        <p id="m-origin"></p>
+      </div>
+      <div class="modal-section">
+        <div class="section-label">In Practice</div>
+        <p id="m-example"></p>
+      </div>
+      <div class="modal-section" id="m-seealso-section">
+        <div class="section-label">See Also</div>
+        <button class="see-also-btn" id="m-seealso-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <span id="m-seealso-label"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <button class="modal-nav-btn" id="modal-next" aria-label="Next law" disabled>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+</div>
+
+<!-- REVIEW QUIZ -->
+<div class="quiz-overlay" id="quiz-overlay" role="dialog" aria-modal="true" aria-label="Review quiz">
+  <div class="quiz-backdrop" id="quiz-backdrop"></div>
+  <div class="quiz-box" role="document" aria-live="polite">
+    <div class="quiz-head">
+      <div class="quiz-title">Review quiz</div>
+      <button class="quiz-close" id="quiz-close" type="button" aria-label="Close quiz">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="quiz-body">
+      <div id="quiz-start">
+        <div class="quiz-start-count" id="quiz-start-count"></div>
+        <p class="quiz-start-desc">The quiz draws questions from laws you've opened. Laws with a green checkmark will be included:</p>
+        <div class="quiz-law-list" id="quiz-law-list"></div>
+        <button class="quiz-done-btn" id="quiz-start-btn" type="button">Start quiz</button>
+      </div>
+      <div id="quiz-play" hidden>
+        <div class="quiz-progress" id="quiz-progress"></div>
+        <div class="quiz-question" id="quiz-question"></div>
+        <div class="quiz-choices" id="quiz-choices"></div>
+        <div class="quiz-confidence" id="quiz-confidence" hidden>
+          <div class="quiz-confidence-label">How confident are you?</div>
+          <div class="quiz-confidence-buttons">
+            <button class="quiz-btn" data-conf="low" type="button">Low</button>
+            <button class="quiz-btn" data-conf="med" type="button">Medium</button>
+            <button class="quiz-btn" data-conf="high" type="button">High</button>
+          </div>
+        </div>
+        <div class="quiz-footer" id="quiz-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Review prompt toast -->
+<div id="review-prompt" aria-live="polite" aria-hidden="true">
+  <div class="review-prompt-inner">
+    <div class="review-prompt-text">
+      Ready for a quick 5‑question review?
+      <div class="review-prompt-sub">Based on the laws you’ve read so far.</div>
+    </div>
+    <div class="review-prompt-actions">
+      <button class="review-prompt-btn primary" id="review-start" type="button">Start</button>
+      <button class="review-prompt-btn" id="review-dismiss" type="button">Not now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tweaks panel -->
+<div id="tweaks-panel">
+  <div id="tweaks-tray">
+    <h4>Tweaks</h4>
+    <div class="tweak-row">
+      <span>Dark mode</span>
+      <button class="tweak-toggle" id="tweak-dark" onclick="toggleDark()"></button>
+    </div>
+    <div class="tweak-row">
+      <span>Card density</span>
+      <select class="tweak-select" id="tweak-density" onchange="setDensity(this.value)">
+        <option value="310">Comfortable</option>
+        <option value="260">Compact</option>
+        <option value="380">Spacious</option>
+      </select>
+    </div>
+    <div class="tweak-row">
+      <span>Hero deco</span>
+      <button class="tweak-toggle on" id="tweak-deco" onclick="toggleDeco()"></button>
+    </div>
+  </div>
+  <button id="tweaks-fab" aria-label="Tweaks">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg>
+  </button>
+</div>
+
+<script>
+const LAWS = [
+  // STRATEGY
+  {id:1,title:"Jobs-to-Be-Done",category:"Strategy",icon:"🔨",
+   short:"Customers don't buy products; they hire them to do a job.",
+   long:"Clayton Christensen's framework reframes the unit of analysis from demographic segments to the 'job' a customer is trying to get done. When you understand the job, you understand the real competition (often an existing workaround, not another product), the trigger that prompts purchase, and the criteria for success. Products fail when they're built around features the team finds impressive rather than jobs customers are already paying to resolve.",
+   origin:"Coined by Clayton Christensen, popularised in 'The Innovator's Solution' (2003) and later 'Competing Against Luck' (2016).",
+   example:"When McDonald's studied milkshake purchases, they found morning commuters weren't buying milkshakes for hunger — they were hiring them to make a boring commute more bearable. This insight drove completely different product decisions than the original demographic analysis.",
+   corollary:"Iceberg Illusion"},
+
+  {id:2,title:"Innovator's Dilemma",category:"Strategy",icon:"⚡",
+   short:"Sustaining innovations lose to disruptive ones because incumbents optimise for current customers.",
+   long:"Well-managed companies consistently fail not because of incompetence but because they listen too carefully to their best customers. Incumbents over-serve high-end users while ignoring the low-end or non-consumption segments where disruption begins. By the time the disruption climbs to the core market, the window to respond has closed. The companies that kill incumbents are often initially dismissed as serving a market 'not worth having'.",
+   origin:"Clayton Christensen, 'The Innovator's Dilemma' (1997). One of the most cited and most misapplied frameworks in product strategy.",
+   example:"Kodak invented the digital camera in 1975 but buried it to protect film revenues. Netflix disrupted Blockbuster by serving the low-end 'good enough' segment that Blockbuster's financial model couldn't profitably serve.",
+   corollary:"Market Timing Paradox"},
+
+  {id:3,title:"Market Timing Paradox",category:"Strategy",icon:"⏱️",
+   short:"Being right about a market too early is indistinguishable from being wrong.",
+   long:"Timing is the single highest-variance variable in product strategy, yet it receives the least analytical attention. Being right two years early burns your runway, demoralises your team, and cedes the market to whoever arrives with similar insight and better timing. A correct thesis executed in the wrong window is a failure. The graveyard of failed startups is full of companies with accurate market views and fatal timing.",
+   origin:"Attributed to Bill Gross (Idealab), who studied hundreds of startups and found timing to be the #1 success factor — ahead of team, idea, or funding.",
+   example:"General Magic (1990) had touchscreens, app stores, and cloud messaging a decade before the iPhone made them viable. Webvan nailed online grocery delivery but arrived before broadband penetration and logistics technology had caught up.",
+   corollary:"Opportunity Cost Law"},
+
+  {id:4,title:"Opportunity Cost Law",category:"Strategy",icon:"🔀",
+   short:"Every decision to build something is a decision not to build everything else.",
+   long:"Product teams habitually evaluate new work against the cost of building it, not against the cost of the best alternative use of that same capacity. Every sprint committed to a low-value feature is a sprint stolen from a high-value one. The PM's primary obligation is not to say yes to good ideas — it is to say no to all ideas that aren't the best possible use of the team's time. The opportunity cost of a bad bet is usually invisible, which makes it systematically underweighted.",
+   origin:"Core principle of economics (Frédéric Bastiat's 'broken window' fallacy, 1850) applied to product decisions by Marty Cagan and the modern product thinking movement.",
+   example:"When Instagram's team spent three months building a complex messaging system, the opportunity cost was three months of not improving the core photo feed — the feature driving retention. The messaging feature was cut six months later.",
+   corollary:"Feature Creep Law"},
+
+  {id:5,title:"Platform Trap",category:"Strategy",icon:"🕸️",
+   short:"Platforms that try to serve everyone equally serve no one well.",
+   long:"Multi-sided platforms succeed by creating disproportionate value for a specific initial side, then leveraging that density to attract the other. Platforms that try to be neutral marketplaces from day one fail because neutrality creates no magnetic pull. The trap is that successful platforms attract demands for generality — to serve more use cases, more user types, more geographies — precisely at the moment when their specificity is what's generating value.",
+   origin:"Drawn from platform economics literature (Eisenmann, Parker, Van Alstyne) and observed consistently across marketplace and SaaS businesses.",
+   example:"Airbnb launched by obsessively serving hosts in New York City, not guests globally. eBay won by dominating collectibles before expanding to general merchandise. Every major platform found its wedge in deep specificity, not broad appeal.",
+   corollary:"Crossing the Chasm"},
+
+  // DISCOVERY
+  {id:6,title:"The Mom Test",category:"Discovery",icon:"🧪",
+   short:"Users lie politely to protect your feelings; ask about past behaviour, not future intent.",
+   long:"Rob Fitzpatrick's rule: a test is good if your mom can't lie to you even if she wants to. Users will say your idea sounds great to be supportive. They'll predict their future behaviour optimistically. The only reliable signal is past behaviour — what have they actually paid for, built workarounds around, complained about? Questions that expose real pain generate useful data; questions about hypothetical futures generate noise. 'Would you use this?' is always the wrong question.",
+   origin:"Rob Fitzpatrick, 'The Mom Test' (2013). One of the most practically useful books in the product discovery canon.",
+   example:"Instead of asking 'Would you use a budgeting app that did X?' (useless), ask 'Walk me through how you handled your last big unexpected expense' (useful). The second question reveals the actual job, the current tools, and the real friction — without letting the customer optimistically lie about their future behaviour.",
+   corollary:"Validation Theater"},
+
+  {id:7,title:"False Consensus Effect",category:"Discovery",icon:"🪞",
+   short:"PMs systematically overestimate how much the market resembles themselves.",
+   long:"A well-documented cognitive bias: people assume their preferences, behaviours, and constraints are more common than they are. For PMs, this is acutely dangerous because they are typically power users of technology, high earners, and early adopters — none of which describes the median customer. Products built for the PM's own preferences systematically miss the addressable market's majority. The more enthusiastic you are about a feature, the more likely you are to overestimate its appeal.",
+   origin:"Named by Lee Ross et al. (1977). Applied to product development by Teresa Torres and Shreyas Doshi.",
+   example:"Dropbox initially assumed users would tolerate a complex setup process because the founding team did. User research with non-technical customers revealed that the install flow was so friction-heavy that the majority abandoned before reaching the product.",
+   corollary:"Power User Blindness"},
+
+  {id:8,title:"Iceberg Illusion",category:"Discovery",icon:"🧊",
+   short:"What users say they want is the visible 10%; the real need is submerged.",
+   long:"User interviews surface stated preferences. Observation surfaces actual behaviour. The gap between the two is where the most valuable product insight lives. Users describe their desired solution ('a faster horse'), not their underlying job ('get somewhere faster'). The PM's role in discovery is to get below the stated request to the latent need, the emotional job, and the social job beneath it. Surface-level requests addressed at face value produce surface-level products.",
+   origin:"Synthesis of Henry Ford's apocryphal 'faster horse' quote with Don Norman's user-centred design work and Christensen's layered jobs framework.",
+   example:"When Intercom researched customer requests for 'better reporting', they found the underlying job was 'justify my team's existence to my VP'. The solution wasn't a richer dashboard — it was one-click executive summaries. Users couldn't have requested this because they didn't know it was possible.",
+   corollary:"The Mom Test"},
+
+  {id:9,title:"Validation Theater",category:"Discovery",icon:"🎭",
+   short:"Running research to confirm decisions already made produces cost without learning.",
+   long:"When teams run user interviews with a predetermined conclusion, they unconsciously guide participants toward confirming it, selectively report supporting data, and call the result 'validated'. The process looks like discovery but functions as advocacy. Real validation means designing tests capable of falsifying the hypothesis and committing in advance to what disconfirming evidence would look like. Without this commitment, every research process confirms the current roadmap.",
+   origin:"Critiqued extensively in Marty Cagan's 'Inspired' (2018) and Teresa Torres's 'Continuous Discovery Habits' (2021). Often described as 'confirmation bias disguised as research'.",
+   example:"A team builds a prototype for a feature the CPO has already committed to in the board deck. They show it to five friendly customers who all say they love it. The team reports the feature as validated. None of the five customers ever use it after launch.",
+   corollary:"The Mom Test"},
+
+  // EXECUTION
+  {id:10,title:"Shipping Bias",category:"Execution",icon:"🚀",
+   short:"A feature's value is zero until it is in users' hands.",
+   long:"Work in progress has no value. A feature 80% complete delivers 0% of its intended outcome. This is not merely a truism about completion — it is a systemic bias that must be corrected for. Teams that optimise for completion velocity over delivery velocity accumulate inventory of done-but-not-shipped work. That inventory gets stale, merges become harder, and the learning loop never closes. Every day a feature isn't shipped is a day you're not learning whether it was the right feature.",
+   origin:"Draws from Lean Manufacturing's critique of Work In Progress (WIP), applied to software by Eric Ries and the continuous delivery movement.",
+   example:"Amazon's 'two-way door' heuristic prioritises releasing reversible decisions quickly. The cost of a wrong reversible decision is a rollback. The cost of not shipping is permanently delayed learning — a much worse trade in expectation.",
+   corollary:"Lean Loop"},
+
+  {id:11,title:"Feature Creep Law",category:"Execution",icon:"🧩",
+   short:"Every feature added makes every other feature harder to discover.",
+   long:"Products don't fail because they lack features — they fail because too many features destroy clarity of value. Each new feature adds cognitive load, increases surface area for bugs, consumes ongoing maintenance capacity, and dilutes the core use case. Worse, features are almost never removed because removing something always has a visible constituency, while the diffuse cost of accumulated complexity has no clear owner.",
+   origin:"Closely related to Tesler's Law of Conservation of Complexity. Documented empirically across consumer software and discussed in Barry Schwartz's 'The Paradox of Choice'.",
+   example:"Microsoft Word added features from 1983 to 2003 until most users could access fewer than 10% of its capabilities. Google Docs launched with a fraction of Word's features and captured a generation of new users on clarity alone.",
+   corollary:"Hick's Law"},
+
+  {id:12,title:"Dependency Tax",category:"Execution",icon:"⛓️",
+   short:"Every external dependency adds latent risk that compounds over time.",
+   long:"Dependencies — on other teams, third-party APIs, shared infrastructure, or upstream roadmaps — each introduce coordination overhead and schedule risk. The tax isn't paid at acquisition but in compounding interest: the more dependencies a team accumulates, the slower they move, the harder shipping becomes, and the more sprint capacity is consumed by maintenance and negotiation rather than value creation.",
+   origin:"Formalised in systems thinking and supply chain management; applied to software teams in 'Accelerate' by Forsgren, Humble, and Kim (2018), which found dependency reduction to be a key predictor of delivery performance.",
+   example:"A product team that requires sign-off from Security, Legal, Platform, and Data before each release will predictably ship at a fraction of the rate of a team with full-stack autonomy — even if both teams are equally talented.",
+   corollary:"Two-Pizza Rule"},
+
+  {id:13,title:"Parkinson's Law of Product",category:"Execution",icon:"🗓️",
+   short:"Work expands to fill the roadmap time allotted to it.",
+   long:"Cyril Northcote Parkinson's original observation about bureaucracy applies directly to product development. When a team is given a two-week sprint, a one-week task becomes a two-week task. Artificial constraints — short iterations, fixed-time demos, frequent ship dates — create forcing functions that compress work to its essential form. Without these constraints, polish, rework, and scope inflation consume capacity invisibly.",
+   origin:"C. Northcote Parkinson, The Economist (1955). Applied to product delivery by practitioners of time-boxed Agile and Lean Startup methodologies.",
+   example:"Basecamp's '6-week cycle' methodology deliberately caps project length. Co-founder Jason Fried argues this isn't about going faster — it's about forcing honest scope decisions that never get made under open-ended timelines.",
+   corollary:"Planning Fallacy"},
+
+  {id:14,title:"Two-Pizza Rule",category:"Execution",icon:"🍕",
+   short:"Teams should be small enough to be fed by two pizzas.",
+   long:"Communication overhead grows as O(n²) with team size. A team of 5 has 10 communication channels; a team of 10 has 45; a team of 20 has 190. Large teams spend an increasing fraction of capacity on coordination, alignment, and meetings. The two-pizza rule keeps teams below the threshold where coordination costs exceed the benefits of additional headcount.",
+   origin:"Jeff Bezos, Amazon. First reported in Brad Stone's 'The Everything Store' (2013). Bezos reportedly refused to approve any initiative requiring more than two pizzas to feed the team.",
+   example:"Spotify's 'squad' model — autonomous teams of 6–8 — operationalises this principle at scale. Each squad owns a user journey end-to-end and can ship independently, minimising the cross-team negotiation tax.",
+   corollary:"Dependency Tax"},
+
+  // METRICS
+  {id:15,title:"Goodhart's Law",category:"Metrics",icon:"📉",
+   short:"When a measure becomes a target, it ceases to be a good measure.",
+   long:"Originally an economic observation, this law describes what happens when a proxy metric is elevated to a goal metric. Teams optimise for the metric rather than the underlying reality it was meant to represent, causing the correlation to break down. Engagement metrics incentivise outrage. Time-on-site incentivises confusion. NPS incentivises survey timing manipulation. The metric improves; the product doesn't.",
+   origin:"Charles Goodhart, Bank of England economist, 1975. Marilyn Strathern's generalisation (1997) made the principle broadly applicable: 'When a measure becomes a target, it ceases to be a good measure.'",
+   example:"Facebook optimised for engagement metrics aggressively in 2016–2018. Engagement went up. Research later showed the content driving that engagement — outrage and divisive material — was systematically damaging user wellbeing and democratic discourse.",
+   corollary:"North Star Fallacy"},
+
+  {id:16,title:"Vanity Metric Trap",category:"Metrics",icon:"🪄",
+   short:"Metrics that grow without causing downstream outcomes are addictive and misleading.",
+   long:"Vanity metrics — total downloads, registered users, page views, social followers — provide the psychological reward of growth without the actionable signal of it. They are always up and to the right, which means they can't diagnose problems. The test of a useful metric: would a bad result change a decision? If you wouldn't change anything when the number falls, it's a vanity metric.",
+   origin:"Eric Ries, 'The Lean Startup' (2011). Ries introduced 'actionable metrics vs. vanity metrics' as a core distinction in product analytics.",
+   example:"A mobile app with 2M downloads and 40K daily active users has a vanity metric problem. The download count grew from a PR spike; the DAU number reveals the retention disaster. Teams that report downloads are avoiding the conversation.",
+   corollary:"Goodhart's Law"},
+
+  {id:17,title:"North Star Fallacy",category:"Metrics",icon:"⭐",
+   short:"Optimising a single metric in a multi-dimensional system will damage the others.",
+   long:"The North Star Metric framework is valuable for alignment but dangerous when taken literally. Products operate in multi-dimensional metric spaces; maximising one dimension virtually always trades off others. A North Star that captures revenue drifts from user experience. One that captures engagement drifts from monetisation. The PM must hold the entire metric system in mind, using the North Star as a compass bearing, not a target to maximise.",
+   origin:"The North Star framework was popularised by Sean Ellis and the growth hacking movement. Its pathologies were documented by John Cutler and Shreyas Doshi, who advocate for metric hierarchies rather than single metrics.",
+   example:"Spotify's North Star is time spent listening. Optimising purely for this metric leads to more autoplay, less friction on content you didn't choose, and passive listening traps — all of which degrade the intentional experience that drives long-term retention.",
+   corollary:"Goodhart's Law"},
+
+  {id:18,title:"Survivorship Bias",category:"Metrics",icon:"🏆",
+   short:"Analysing only successful users creates a distorted map of the customer journey.",
+   long:"When you study power users, retained cohorts, or converted customers, you're studying the survivors of your funnel — not the representative population. The users who churned, failed to activate, or never converted are absent from the analysis but represent the majority of people who encountered your product. Decisions made from survivor data systematically underestimate friction, overestimate willingness to pay, and misdiagnose growth problems.",
+   origin:"Abraham Wald's WWII analysis of bullet holes in returning planes — the canonical example. Applied to product analytics by practitioners of cohort analysis and funnel diagnostics.",
+   example:"When Slack studied what made users successful, they found sending 2,000 messages correlated with retention. The insight was valid; the lesson ('get teams to 2K messages') missed the deeper question: what stopped churned teams from getting there?",
+   corollary:"Activation Cliff"},
+
+  {id:19,title:"Metric Lag Law",category:"Metrics",icon:"🔭",
+   short:"The easiest metrics to measure are rarely the most important ones.",
+   long:"Instrumentation selects for what is measurable, not what is meaningful. Clicks, sessions, and revenue are easy to instrument. Trust, habit strength, and switching cost are hard to measure but often dominate long-term retention. Over time, product decisions drift toward the measurable, gradually deprioritising harder-to-quantify factors that most explain the product's trajectory.",
+   origin:"Closely related to the McNamara Fallacy (Robert McNamara's Vietnam-era reliance on body count metrics while ignoring unmeasurable factors like morale and legitimacy). Applied to product metrics discourse.",
+   example:"Quibi measured video completion rates and engagement per session obsessively. The metric it couldn't measure — whether users had any compelling reason to open the app on a given day — was the one that killed it.",
+   corollary:"Vanity Metric Trap"},
+
+  // LEADERSHIP
+  {id:20,title:"HiPPO Effect",category:"Leadership",icon:"🦛",
+   short:"The Highest Paid Person's Opinion displaces data when cultures lack psychological safety.",
+   long:"The HiPPO Effect describes the organisational tendency for decisions to converge on the preference of the most senior person in the room, regardless of evidence. In product organisations, this is lethal because the most senior person is usually furthest from the customer, most subject to narrative bias, and least likely to be contradicted. Countering it requires structural protection of dissent: pre-mortems, anonymous polls, and explicit norms that separate data from hierarchy.",
+   origin:"Coined by Avinash Kaushik, digital marketing evangelist at Google. The term has become standard in data-driven product culture.",
+   example:"At Yahoo in the 2000s, multiple product teams had data showing mobile was the next paradigm. The decision not to invest came from the top, was not challenged, and the opportunity was ceded to Google and Apple. Culture, not data, was the deciding factor.",
+   corollary:"Ownership Paradox"},
+
+  {id:21,title:"Ownership Paradox",category:"Leadership",icon:"🔑",
+   short:"The team that must ask permission cannot take ownership.",
+   long:"Ownership is not a title or a cultural value — it is a structural property of how decisions are made. A team that must escalate product decisions doesn't own the product; it owns the implementation of someone else's decisions. The paradox: the more tightly managers supervise, the less accountability teams feel — and the less accountability they feel, the more managers supervise. Autonomy and accountability are the same variable.",
+   origin:"Articulated in various forms by Patrick Lencioni, Bezos's decision-making frameworks, and the academic literature on psychological ownership.",
+   example:"Spotify's squad model explicitly grants squads autonomy over their domain — including the right to make decisions the tribe doesn't like — because this is what generates real accountability. A squad that can be overruled at will will not behave like an owner.",
+   corollary:"HiPPO Effect"},
+
+  {id:22,title:"Roadmap Promise Problem",category:"Leadership",icon:"🗺️",
+   short:"Every roadmap is both a strategy document and a set of commitments that will conflict.",
+   long:"Roadmaps serve two incompatible functions: they communicate strategic direction (which requires flexibility) and they set stakeholder expectations (which require commitment). A roadmap shown to the board becomes a promise. Shared with engineering, it becomes a plan. Published to customers, it becomes a contract. The PM who doesn't manage this duality ends up with a document that's simultaneously too rigid for strategy and too vague for execution.",
+   origin:"Discussed by Melissa Perri in 'Escaping the Build Trap' (2019) and Marty Cagan, who distinguishes 'commitment roadmaps' (what most teams produce) from 'outcome roadmaps' (what they should).",
+   example:"When Basecamp killed their roadmap entirely in 2012, customers who had made purchasing decisions based on upcoming features were upset — but the team moved dramatically faster without the commitment overhead. The tradeoff is real: transparency vs. flexibility.",
+   corollary:"Vision Decay"},
+
+  {id:23,title:"Vision Decay",category:"Leadership",icon:"🌫️",
+   short:"Without constant reinforcement, team alignment on product vision degrades with every sprint.",
+   long:"Product vision is not a statement you write and post in Notion — it is a shared mental model that requires active maintenance. As teams grow, new people join with their own mental models. As sprints accumulate, tactical urgency crowds out strategic intent. As stakeholders change, the vision gets reinterpreted. The PM who assumes the vision articulated once is the vision the team operates from is regularly surprised by the products their teams build.",
+   origin:"Related to Claude Shannon's information entropy: signal degrades over every retransmission. Applied to organisational communication by leadership researchers and product leaders at large-scale tech organisations.",
+   example:"Amazon's 'working backwards' process — starting every major initiative with a press release describing the customer benefit — is partly a vision decay countermeasure. It forces teams to re-articulate the goal concretely before each project, preventing strategic drift.",
+   corollary:"Roadmap Promise Problem"},
+
+  // GTM
+  {id:24,title:"Crossing the Chasm",category:"GTM",icon:"🌉",
+   short:"Early adopters and mainstream customers are separated by a gap that kills most products.",
+   long:"Geoffrey Moore's technology adoption lifecycle identifies a structural discontinuity between early adopters (who buy into vision and tolerate rough edges) and the early majority (who buy proven solutions to known problems). Early traction in the visionary segment does not transfer automatically to the pragmatist mainstream. Products that don't explicitly design a crossing strategy stall in the chasm — burning runway on a customer segment that was never going to scale.",
+   origin:"Geoffrey Moore, 'Crossing the Chasm' (1991, revised 2014). One of the most enduring frameworks in B2B technology go-to-market strategy.",
+   example:"Salesforce crossed the chasm by targeting a single use case — sales force automation for SMB — relentlessly before expanding. Companies that try to cross broadly, serving all segments simultaneously, typically succeed in none and run out of money.",
+   corollary:"Distribution Beats Product"},
+
+  {id:25,title:"Distribution Beats Product",category:"GTM",icon:"📡",
+   short:"A good product with great distribution beats a great product with good distribution.",
+   long:"Distribution advantages compound over time in ways that product advantages rarely do. A product differentiator can be copied in 6–18 months; a distribution channel built over years cannot. This is why acquisitions often target distribution, not technology. The PM who ignores distribution as a product consideration — who assumes quality will be discovered — is solving half the problem.",
+   origin:"Peter Thiel articulates the distribution primacy argument in 'Zero to One' (2014). Marc Andreessen's product-market fit framing implicitly includes distribution as part of the 'market' half of the fit.",
+   example:"HubSpot's free CRM is not the best CRM. It wins because it sits at the top of a distribution funnel built via content marketing. The product strategy is inseparable from the GTM strategy — the CRM is the distribution.",
+   corollary:"Retention Before Acquisition"},
+
+  {id:26,title:"Pricing Anchors Value",category:"GTM",icon:"💰",
+   short:"How you price communicates what your product is worth more than anything you say.",
+   long:"Price is not a financial variable that follows value — it is a signal that shapes perception of value. A product priced like a commodity will be evaluated like one. A product priced at enterprise SaaS rates will be scrutinised and adopted with enterprise-scale commitment. PMs who treat pricing as a finance team decision are surrendering one of their highest-leverage positioning tools.",
+   origin:"Pricing strategy and value-based pricing theory (Thomas Nagle, 'The Strategy and Tactics of Pricing'). Applied to SaaS by Patrick Campbell (ProfitWell) and the product-led growth community.",
+   example:"When Basecamp raised its price from $99/month to $299/month, signups dropped but revenue increased — and support volume fell, because customers who paid more self-selected for serious use cases. The price filter was also a value signal.",
+   corollary:"Distribution Beats Product"},
+
+  {id:27,title:"Retention Before Acquisition",category:"GTM",icon:"🪣",
+   short:"Acquiring users into a leaky bucket grows nothing.",
+   long:"Growth is net of churn. A product with 20% monthly churn that adds 20% new users monthly is standing still. Acquisition is visible and attributable — every marketing dollar has a dashboard. Retention is invisible and systemic — it shows up as slowing growth six months later. This creates an organisational incentive to over-invest in acquisition and under-invest in the root causes of churn.",
+   origin:"Popularised in product-led growth and consumer SaaS literature. Andrew Chen's essays on growth loops and retention as the foundation of compounding growth.",
+   example:"Duolingo's most important product metric is Day 1 retention — whether users come back the day after first signup. The entire product design centres on this metric before worrying about new user acquisition, because a leaky Day-1 retention makes every acquisition dollar worthless.",
+   corollary:"Activation Cliff"},
+
+  // PROCESS
+  {id:28,title:"Planning Fallacy",category:"Process",icon:"📐",
+   short:"Teams systematically underestimate effort and overestimate scope deliverable in a cycle.",
+   long:"Daniel Kahneman and Amos Tversky documented the planning fallacy: humans are reliably overoptimistic about timelines even when they know similar past projects overran. In product development, this compounds because scope expands during execution, integration takes longer than expected, and testing surfaces unexpected issues. The correct response is not to add more buffer — it is to scope less ambitiously. Buffer slack is consumed by Parkinson's Law.",
+   origin:"Kahneman and Tversky, 1979. Kahneman discusses it at length in 'Thinking, Fast and Slow' (2011). Scrum velocity tracking is partly a planning fallacy countermeasure.",
+   example:"A study of major software projects found the average overrun was 45%, and that adding a 20% buffer reduced overruns by only 3%. The issue is systematic, not probabilistic — you can't buffer your way out of a cognitive bias.",
+   corollary:"Parkinson's Law of Product"},
+
+  {id:29,title:"Lean Loop",category:"Process",icon:"🔄",
+   short:"Build → Measure → Learn cycles compound faster than any single big bet.",
+   long:"The Lean Startup's core insight is that learning, not shipping, is the primary output of product development. A team that completes three validated learning cycles in the time another team spends perfecting a single launch will have significantly more compound knowledge. The enemy of the lean loop is batch size: large, infrequent releases create long feedback loops; small, frequent releases tighten them.",
+   origin:"Eric Ries, 'The Lean Startup' (2011), drawing on Toyota Production System principles and Steve Blank's customer development methodology.",
+   example:"Dropbox's original MVP was a three-minute demo video, not a product. It generated 75,000 signups in 24 hours and validated demand before a line of backend code was written. The learning was worth more than any version of the product would have been.",
+   corollary:"Shipping Bias"},
+
+  {id:30,title:"Agile Paradox",category:"Process",icon:"🌀",
+   short:"The more rigidly you implement an agile process, the less agile you are.",
+   long:"The Agile Manifesto valued 'individuals and interactions over processes and tools'. The industry responded by creating SAFe, LeSS, DAD, and a consulting ecosystem of certified process frameworks. Teams that follow the ceremony of agility — standups, retrospectives, story points — without the underlying values often have less responsiveness to change than teams running simpler, more direct processes. The ritual of agility is not agility.",
+   origin:"Observed by the original Agile Manifesto signatories (2001) and lamented most vocally by Ron Jeffries, who has publicly criticised 'Dark Scrum' and the bastardisation of agile values.",
+   example:"A team with 40% of sprint time consumed by planning, grooming, estimating, and retro ceremonies is not agile — it is bureaucratic with a sprint cadence. Basecamp runs no standups, no sprints, and no retrospectives, and ships more coherent products than most teams that do all three.",
+   corollary:"Lean Loop"},
+
+  {id:31,title:"Technical Debt Interest",category:"Process",icon:"💳",
+   short:"Deferred technical decisions accrue interest payable in velocity.",
+   long:"Ward Cunningham's technical debt metaphor captures something precise: like financial debt, technical debt is not inherently bad — it's a way of borrowing from the future to deliver value now. The problem is when it's unacknowledged, untracked, or never repaid. Every sprinted workaround that isn't refactored slows every future feature touching the same code. Product teams that don't advocate for debt repayment are unknowingly taxing their own future velocity.",
+   origin:"Ward Cunningham coined the metaphor in 1992. Martin Fowler's 'Technical Debt Quadrant' (2009) provides a useful taxonomy. The PM's role in this conversation is discussed in Marty Cagan's 'Inspired'.",
+   example:"When Slack rebuilt their desktop app in 2019 (Project Tinderbox), they'd accumulated years of technical debt that had slowed feature development to a crawl. The rewrite took 18 months and hundreds of engineer-years — debt repayment at compound interest.",
+   corollary:"Dependency Tax"},
+
+  // USERS
+  {id:32,title:"Hick's Law",category:"Users",icon:"🧠",
+   short:"Decision time grows logarithmically with the number of choices presented.",
+   long:"William Edmund Hick and Ray Hyman established that the time to make a decision increases logarithmically with the number of options. For product design, this means simplification has compounding returns: halving the number of choices reduces decision time dramatically, not marginally. Navigation structures, onboarding flows, and pricing pages are all subject to Hick's Law — more options always costs the user cognitive load.",
+   origin:"Hick (1952) and Hyman (1953). One of the most robust findings in cognitive psychology applied to UX design. Referenced consistently in usability literature.",
+   example:"Netflix shows a subset of its catalogue on the homepage rather than the full library. The selection algorithm isn't just personalisation — it's friction reduction. Showing 10,000 options creates decision paralysis; showing 20 good ones creates a satisfying choice.",
+   corollary:"Feature Creep Law"},
+
+  {id:33,title:"Power User Blindness",category:"Users",icon:"👤",
+   short:"Users who give you the most feedback are the least representative of your average user.",
+   long:"The customers who engage with your feedback channels — community forums, support tickets, NPS surveys, user interviews — are systematically different from the median customer. They care more, use the product more intensively, have stronger opinions, and often have adjacent technical expertise. Building for them is building for an unrepresentative sample. Your most vocal customer is not your typical customer; your typical customer is silent.",
+   origin:"Related to the False Consensus Effect and selection bias in user research. Documented by practitioners of inclusive design and Jobs-to-be-Done research.",
+   example:"When Twitter launched, heavy users demanded powerful search. The median user never used search at all. Twitter's near-total focus on power-user feedback in 2012–2016 has been credited internally with delaying mainstream user growth by years.",
+   corollary:"False Consensus Effect"},
+
+  {id:34,title:"Activation Cliff",category:"Users",icon:"🏔️",
+   short:"The gap between sign-up and first value moment is where most products bleed out.",
+   long:"Activation — the moment a new user experiences the core value of the product — is the most leveraged moment in the product lifecycle. Users who reach activation retain; users who don't, churn silently and are invisible in success metrics. Most products lose more than half their new users before activation, making it the highest-ROI area of product investment. Retention strategies applied before activation are applied to the wrong cohort.",
+   origin:"The 'aha moment' concept was popularised by Chamath Palihapitiya describing Facebook's growth team insight that users who add 7 friends in 10 days retain indefinitely.",
+   example:"Slack defines activation as a team sending 2,000 messages. Their entire new-user experience is designed to drive teams to this threshold as rapidly as possible, because Slack's data shows near-zero churn for teams that reach it.",
+   corollary:"Retention Before Acquisition"},
+
+  {id:35,title:"Habit Loop",category:"Users",icon:"🔁",
+   short:"Products that don't embed into a behavioural routine are deleted at first friction.",
+   long:"Nir Eyal's Hook Model describes how durable product habits form: an external trigger prompts a behaviour, a variable reward reinforces it, and an investment (data, social graph, created content) raises switching cost. Products that don't attach to an existing routine must create a new one — dramatically harder, and requiring either very high-frequency use cases or compelling enough rewards to override behavioural inertia.",
+   origin:"Nir Eyal, 'Hooked: How to Build Habit-Forming Products' (2014), drawing on BJ Fogg's Behaviour Model and Skinner's variable reward research.",
+   example:"Instagram survived early growth by attaching itself to existing social sharing behaviour. Snapchat created a new behaviour by making impermanence itself the hook. Products that failed tried to create entirely new contexts of use with no existing habit to attach to.",
+   corollary:"Activation Cliff"},
+
+  {id:36,title:"Zeigarnik Effect",category:"Users",icon:"📌",
+   short:"Users remember incomplete tasks better than completed ones — design onboarding accordingly.",
+   long:"Bluma Zeigarnik found in 1927 that incomplete tasks create a persistent 'open loop' in working memory that demands closure. This is why progress bars, setup checklists, and profile completion indicators are so effective: they don't just communicate status — they exploit a cognitive bias toward completion that creates intrinsic motivation to return. Products that design onboarding as a finite checklist are using the Zeigarnik Effect deliberately.",
+   origin:"Bluma Zeigarnik, Soviet psychologist, 1927. Widely applied in gamification theory, onboarding design, and behavioural product design literature.",
+   example:"LinkedIn's profile completeness meter is a direct application: users return to fill sections not because of instructions but because the incomplete state is psychologically uncomfortable. The percentage is calibrated to stop just short of 100% until premium features are unlocked.",
+   corollary:"Habit Loop"}
+];
+
+// ── CATEGORY CONFIG ──
+const CATS = ["All","Strategy","Discovery","Execution","Metrics","Leadership","GTM","Process","Users"];
+const CAT_COLORS = {
+  Strategy:   {bg:"var(--strategy-bg)",   fg:"var(--strategy-fg)"},
+  Discovery:  {bg:"var(--discovery-bg)",  fg:"var(--discovery-fg)"},
+  Execution:  {bg:"var(--execution-bg)",  fg:"var(--execution-fg)"},
+  Metrics:    {bg:"var(--metrics-bg)",    fg:"var(--metrics-fg)"},
+  Leadership: {bg:"var(--leadership-bg)", fg:"var(--leadership-fg)"},
+  GTM:        {bg:"var(--gtm-bg)",        fg:"var(--gtm-fg)"},
+  Process:    {bg:"var(--process-bg)",    fg:"var(--process-fg)"},
+  Users:      {bg:"var(--users-bg)",      fg:"var(--users-fg)"},
+};
+
+let activeCat = "All";
+let query = "";
+
+// ── FILTERS ──
+const filtersEl = document.getElementById("filters");
+CATS.forEach(cat => {
+  const count = cat === "All" ? LAWS.length : LAWS.filter(l => l.category === cat).length;
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "filter-btn" + (cat === "All" ? " active" : "");
+  btn.dataset.cat = cat;
+  btn.innerHTML = `${cat} <span class="count">${count}</span>`;
+  btn.addEventListener("click", () => {
+    activeCat = cat;
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderGrid();
+  });
+  filtersEl.appendChild(btn);
+});
+
+// ── GRID ──
+const gridEl = document.getElementById("grid");
+const countEl = document.getElementById("results-count");
+
+function filtered() {
+  return LAWS.filter(l => {
+    const catOk = activeCat === "All" || l.category === activeCat;
+    const q = query.toLowerCase();
+    const textOk = !q || [l.title, l.short, l.category, l.long].some(s => s.toLowerCase().includes(q));
+    return catOk && textOk;
+  });
+}
+
+function renderGrid() {
+  const laws = filtered();
+  countEl.textContent = laws.length === LAWS.length
+    ? `All ${LAWS.length} laws`
+    : `${laws.length} of ${LAWS.length} laws`;
+
+  gridEl.innerHTML = "";
+  if (!laws.length) {
+    gridEl.innerHTML = `<div class="empty-state">No laws match your search.</div>`;
+    return;
+  }
+  laws.forEach(law => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.dataset.cat = law.category;
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", `Read about ${law.title}`);
+    const lawIdx = LAWS.findIndex(l => l.id === law.id);
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="card-icon">${law.icon}</span>
+        <span class="card-num">#${String(law.id).padStart(2,"0")}</span>
+      </div>
+      <span class="cat-badge">${law.category}</span>
+      <h3 class="card-title">${law.title}</h3>
+      <p class="card-short">${law.short}</p>
+      <div class="card-cta">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Read more
+      </div>`;
+    card.addEventListener("click", () => openModal(law));
+    card.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" ") { e.preventDefault(); openModal(law); }});
+    gridEl.appendChild(card);
+  });
+}
+
+// ── SEARCH ──
+document.getElementById("search").addEventListener("input", e => {
+  query = e.target.value;
+  renderGrid();
+});
+
+// ── MODAL ──
+const overlay = document.getElementById("modal-overlay");
+const backdrop = document.getElementById("modal-backdrop");
+const modalPrevBtn = document.getElementById("modal-prev");
+const modalNextBtn = document.getElementById("modal-next");
+const modalBoxEl = document.getElementById("modal-box");
+const modalPrevTitleBtn = document.getElementById("modal-prev-title");
+const modalNextTitleBtn = document.getElementById("modal-next-title");
+const mobileCounterEl = document.getElementById("modal-counter");
+const mobileCounterInnerEl = document.getElementById("modal-counter-inner");
+const mobileHintEl = document.getElementById("modal-swipe-hint");
+
+const isMobileViewport = () => window.matchMedia("(max-width: 768px)").matches;
+
+// ── LEARNING PROGRESS + REVIEW QUIZ ──
+const LS = {
+  seen: "lopm-seen-laws",
+  promptShown: "lopm-review-prompt-shown",
+  qStats: "lopm-quiz-stats",
+};
+
+function safeJsonParse(str, fallback) {
+  try { return JSON.parse(str); } catch { return fallback; }
+}
+function loadSeen() {
+  const arr = safeJsonParse(localStorage.getItem(LS.seen), []);
+  return new Set(Array.isArray(arr) ? arr : []);
+}
+function saveSeen(set) {
+  localStorage.setItem(LS.seen, JSON.stringify([...set]));
+}
+function loadQStats() {
+  const obj = safeJsonParse(localStorage.getItem(LS.qStats), {});
+  return obj && typeof obj === "object" ? obj : {};
+}
+function saveQStats(stats) {
+  localStorage.setItem(LS.qStats, JSON.stringify(stats));
+}
+
+// Deterministic pseudo-random for stable distractors per law
+function seededRand(seed) {
+  let x = Math.sin(seed) * 10000;
+  return () => {
+    x = Math.sin(x) * 10000;
+    return x - Math.floor(x);
+  };
+}
+function pickDistinctTitles(excludeTitle, count, seed) {
+  const rnd = seededRand(seed);
+  const titles = LAWS.map(l => l.title).filter(t => t !== excludeTitle);
+  for (let i = titles.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    [titles[i], titles[j]] = [titles[j], titles[i]];
+  }
+  return titles.slice(0, count);
+}
+
+// Per-law transfer + diagnosis strings (short + explicit)
+const LAW_ACTION = {
+  "Jobs-to-Be-Done": "Clarify the job the customer is hiring the product for before changing features.",
+  "Innovator's Dilemma": "Protect a disruptive bet from core-customer optimisation pressure.",
+  "Market Timing Paradox": "Validate timing signals (readiness, channels, constraints) before scaling investment.",
+  "Opportunity Cost Law": "Compare this work against the best alternative use of the team’s time.",
+  "Platform Trap": "Pick one side + wedge and create density before going general.",
+  "The Mom Test": "Ask about recent past behavior and real constraints, not future intent.",
+  "False Consensus Effect": "Actively sample users unlike yourself before committing to a solution.",
+  "Iceberg Illusion": "Probe for the underlying job/need beneath the stated feature request.",
+  "Validation Theater": "Design the test to falsify the hypothesis, not to confirm it.",
+  "Shipping Bias": "Ship a small, reversible version to create learning in the real world.",
+  "Feature Creep Law": "Reduce scope and complexity; protect clarity of the core use case.",
+  "Dependency Tax": "Remove or internalize dependencies to reduce coordination risk.",
+  "Parkinson's Law of Product": "Time-box and cut scope to force essential decisions.",
+  "Two-Pizza Rule": "Keep the team small and autonomous so it can ship independently.",
+  "Goodhart's Law": "Use the metric as a signal, not a target; watch for gaming.",
+  "Vanity Metric Trap": "Pick a metric that would change a decision if it went down.",
+  "North Star Fallacy": "Balance multiple metrics; treat the north star as a compass, not a target.",
+  "Survivorship Bias": "Study churned/non-activated users, not just power users.",
+  "Metric Lag Law": "Add qualitative signals for what matters but is hard to measure.",
+  "HiPPO Effect": "Create decision structures that let data beat hierarchy.",
+  "Ownership Paradox": "Give teams real decision rights so accountability is possible.",
+  "Roadmap Promise Problem": "Separate strategy direction from commitments; label what’s a promise.",
+  "Vision Decay": "Re-articulate the vision frequently and concretely before each initiative.",
+  "Crossing the Chasm": "Pick a narrow beachhead and win it before expanding.",
+  "Distribution Beats Product": "Build distribution loops/channels as part of the product plan.",
+  "Pricing Anchors Value": "Treat pricing as positioning; test value-based pricing deliberately.",
+  "Retention Before Acquisition": "Fix retention first; acquisition into churn is wasted.",
+  "Planning Fallacy": "Assume optimism bias; cut scope rather than adding buffer.",
+  "Lean Loop": "Shrink batch size so build→measure→learn cycles speed up.",
+  "Agile Paradox": "Use agile values; cut ceremony that reduces responsiveness.",
+  "Technical Debt Interest": "Pay down debt that’s compounding and slowing delivery.",
+  "Hick's Law": "Reduce choices; simplify paths so decisions are faster.",
+  "Power User Blindness": "Don’t overfit to vocal users; design for the silent majority.",
+  "Activation Cliff": "Shorten time-to-first-value; focus on the activation moment.",
+  "Habit Loop": "Attach to an existing routine and create triggers/rewards/investment.",
+  "Zeigarnik Effect": "Use an explicit checklist/progress loop to motivate completion.",
+};
+
+const LAW_VIOLATION = {
+  "Jobs-to-Be-Done": "Debating feature lists without clarifying the user’s job-to-be-done.",
+  "Innovator's Dilemma": "Killing a disruptive bet because current best customers dislike it.",
+  "Market Timing Paradox": "Scaling a correct thesis before the market is ready to adopt it.",
+  "Opportunity Cost Law": "Approving work because it’s cheap, without comparing alternatives.",
+  "Platform Trap": "Trying to serve all sides equally from day one with no wedge.",
+  "The Mom Test": "Asking “Would you use this?” and taking enthusiasm as validation.",
+  "False Consensus Effect": "Assuming your own preferences represent the market.",
+  "Iceberg Illusion": "Building the requested feature without probing the underlying need.",
+  "Validation Theater": "Running interviews that can’t disconfirm the roadmap decision.",
+  "Shipping Bias": "Optimizing for ‘almost done’ work instead of getting to users.",
+  "Feature Creep Law": "Adding features that dilute the core value and raise complexity.",
+  "Dependency Tax": "Stacking cross-team approvals until shipping requires negotiations.",
+  "Parkinson's Law of Product": "Letting work sprawl because the timeline is open-ended.",
+  "Two-Pizza Rule": "Growing teams until coordination overhead dominates output.",
+  "Goodhart's Law": "Turning the proxy metric into the goal and rewarding gaming.",
+  "Vanity Metric Trap": "Reporting big top-line numbers that don’t change decisions.",
+  "North Star Fallacy": "Maximizing one metric while ignoring damage to the system.",
+  "Survivorship Bias": "Learning only from retained users and ignoring churned ones.",
+  "Metric Lag Law": "Optimizing only what’s easy to measure and ignoring what matters.",
+  "HiPPO Effect": "Letting the most senior opinion decide despite contrary data.",
+  "Ownership Paradox": "Demanding ownership while requiring permission for decisions.",
+  "Roadmap Promise Problem": "Treating every roadmap slide as a binding commitment.",
+  "Vision Decay": "Assuming the vision is shared without repeating it concretely.",
+  "Crossing the Chasm": "Mistaking early adopters for mainstream product-market fit.",
+  "Distribution Beats Product": "Assuming a great product will be discovered without channels.",
+  "Pricing Anchors Value": "Letting pricing drift without considering positioning signals.",
+  "Retention Before Acquisition": "Buying growth while churn stays high.",
+  "Planning Fallacy": "Trusting estimates despite consistent historical overruns.",
+  "Lean Loop": "Batching learning into rare big launches instead of tight loops.",
+  "Agile Paradox": "Adding rigid ceremony that reduces responsiveness to change.",
+  "Technical Debt Interest": "Deferring debt indefinitely until velocity collapses.",
+  "Hick's Law": "Adding options until users face decision paralysis.",
+  "Power User Blindness": "Building primarily for the most vocal, unrepresentative users.",
+  "Activation Cliff": "Ignoring onboarding friction between signup and first value.",
+  "Habit Loop": "Expecting retention without triggers, rewards, or investment.",
+  "Zeigarnik Effect": "Removing progress cues so users feel no pull to return.",
+};
+
+function buildQuestionsForLaw(law) {
+  const seed = 1000 + law.id * 37;
+  const distractorTitles = pickDistinctTitles(law.title, 3, seed);
+
+  const q1Choices = [law.title, ...distractorTitles].sort((a,b) => a.localeCompare(b));
+  const q1 = {
+    id: `law${law.id}-diagnosis-apply`,
+    lawId: law.id,
+    kind: "diagnosis",
+    prompt: `Which law does this principle describe?\n\n”${law.short}”`,
+    choices: q1Choices,
+    correct: law.title,
+    explain: `Correct: ${law.title}. ${LAW_ACTION[law.title] || ""}`.trim(),
+  };
+
+  const action = LAW_ACTION[law.title] || "Choose the action that best matches the principle.";
+  const q2Distractors = pickDistinctTitles(law.title, 3, seed + 11).map(t => LAW_ACTION[t] || "Apply a different principle.");
+  const q2Choices = [action, ...q2Distractors].sort((a,b) => a.localeCompare(b));
+  const q2 = {
+    id: `law${law.id}-transfer-next`,
+    lawId: law.id,
+    kind: "transfer",
+    prompt: `You want to apply “${law.title}”. What’s the best next move?`,
+    choices: q2Choices,
+    correct: action,
+    explain: action,
+  };
+
+  const violation = LAW_VIOLATION[law.title] || "Selecting an option that contradicts the principle.";
+  const q3Distractors = pickDistinctTitles(law.title, 3, seed + 23).map(t => LAW_VIOLATION[t] || "A different failure mode.");
+  const q3Choices = [violation, ...q3Distractors].sort((a,b) => a.localeCompare(b));
+  const q3 = {
+    id: `law${law.id}-diagnosis-violation`,
+    lawId: law.id,
+    kind: "diagnosis",
+    prompt: `Which behavior most violates “${law.title}”?`,
+    choices: q3Choices,
+    correct: violation,
+    explain: `This is the classic failure mode of ${law.title}.`,
+  };
+
+  return [q1, q2, q3];
+}
+
+function getWeaknessScoreForQuestion(q, stats) {
+  const s = stats[q.id] || { attempts: 0, correct: 0, lastAskedAt: 0 };
+  const attempts = s.attempts || 0;
+  const correct = s.correct || 0;
+  const acc = attempts ? correct / attempts : 0;
+  const unseenBoost = attempts === 0 ? 1.2 : 0;
+  const wrongBoost = attempts ? (1 - acc) : 0.8;
+  const recencyPenalty = s.lastAskedAt ? Math.min(0.9, (Date.now() - s.lastAskedAt) / (1000 * 60 * 60 * 24) / 3) : 0.9;
+  return unseenBoost + wrongBoost + (1 - recencyPenalty) * 0.2;
+}
+
+function buildReviewQuizQuestions(count = 5) {
+  const seen = loadSeen();
+  const seenLaws = LAWS.filter(l => seen.has(l.id));
+  const pool = seenLaws.flatMap(buildQuestionsForLaw);
+  const stats = loadQStats();
+  const ranked = pool
+    .map(q => ({ q, score: getWeaknessScoreForQuestion(q, stats) }))
+    .sort((a, b) => b.score - a.score);
+
+  const out = [];
+  const usedLawIds = new Set();
+  for (const item of ranked) {
+    if (out.length >= count) break;
+    // light diversity: prefer spreading across laws
+    if (usedLawIds.has(item.q.lawId) && out.length < Math.min(count, seenLaws.length)) continue;
+    out.push(item.q);
+    usedLawIds.add(item.q.lawId);
+  }
+  // if not enough (very small seen), allow repeats
+  for (const item of ranked) {
+    if (out.length >= count) break;
+    if (out.some(q => q.id === item.q.id)) continue;
+    out.push(item.q);
+  }
+  return out.slice(0, count);
+}
+
+const reviewPromptEl = document.getElementById("review-prompt");
+const reviewStartBtn = document.getElementById("review-start");
+const reviewDismissBtn = document.getElementById("review-dismiss");
+function showReviewPrompt() {
+  if (!reviewPromptEl) return;
+  reviewPromptEl.classList.add("open");
+  reviewPromptEl.setAttribute("aria-hidden", "false");
+}
+function hideReviewPrompt() {
+  if (!reviewPromptEl) return;
+  reviewPromptEl.classList.remove("open");
+  reviewPromptEl.setAttribute("aria-hidden", "true");
+}
+if (reviewDismissBtn) {
+  reviewDismissBtn.addEventListener("click", () => {
+    hideReviewPrompt();
+    try { localStorage.setItem(LS.promptShown, "1"); } catch {}
+  });
+}
+
+let mobileToastTimer = null;
+function showMobileCounter(idx) {
+  if (!isMobileViewport()) return;
+  if (!mobileCounterEl || !mobileCounterInnerEl) return;
+  mobileCounterInnerEl.textContent = `${idx + 1}/${LAWS.length}`;
+  mobileCounterEl.classList.add("show");
+  if (mobileToastTimer) clearTimeout(mobileToastTimer);
+  mobileToastTimer = setTimeout(() => mobileCounterEl.classList.remove("show"), 1100);
+}
+
+let swipeHintShown = false;
+function maybeShowSwipeHint() {
+  if (!isMobileViewport()) return;
+  if (!mobileHintEl) return;
+  if (swipeHintShown) return;
+  swipeHintShown = true;
+  mobileHintEl.classList.add("show");
+  setTimeout(() => mobileHintEl.classList.remove("show"), 1800);
+}
+
+// Edge-swipe navigation (mobile only)
+let swipeActive = false;
+let swipeEdge = null; // "left" | "right"
+let swipeStartX = 0;
+let swipeStartY = 0;
+let swipeStartT = 0;
+let swipeMaxDY = 0;
+let swipeConsumed = false;
+function resetSwipe() {
+  swipeActive = false;
+  swipeEdge = null;
+  swipeConsumed = false;
+  swipeMaxDY = 0;
+}
+
+function onTouchStart(e) {
+  if (!overlay.classList.contains("open")) return;
+  if (!isMobileViewport()) return;
+  if (!e.touches || e.touches.length !== 1) return;
+
+  const t = e.touches[0];
+  const rect = modalBoxEl.getBoundingClientRect();
+  const edgeW = Math.max(44, Math.min(72, rect.width * 0.14)); // ~14% width, clamped
+  const distFromLeft = t.clientX - rect.left;
+  const distFromRight = rect.right - t.clientX;
+  if (distFromLeft > edgeW && distFromRight > edgeW) return;
+
+  swipeActive = true;
+  swipeEdge = distFromLeft <= edgeW ? "left" : "right";
+  swipeStartX = t.clientX;
+  swipeStartY = t.clientY;
+  swipeStartT = performance.now();
+  swipeMaxDY = 0;
+  swipeConsumed = false;
+}
+
+function onTouchMove(e) {
+  if (!swipeActive) return;
+  if (!e.touches || e.touches.length !== 1) { resetSwipe(); return; }
+
+  const t = e.touches[0];
+  const dx = t.clientX - swipeStartX;
+  const dy = t.clientY - swipeStartY;
+  swipeMaxDY = Math.max(swipeMaxDY, Math.abs(dy));
+
+  // If user is clearly scrolling vertically, bail.
+  if (swipeMaxDY > 18 && Math.abs(dy) > Math.abs(dx) * 1.2) {
+    resetSwipe();
+    return;
+  }
+
+  // Once it's a real horizontal gesture, stop the page from interpreting it as scroll.
+  if (!swipeConsumed && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.1) {
+    swipeConsumed = true;
+  }
+  if (swipeConsumed) e.preventDefault();
+}
+
+function onTouchEnd(e) {
+  if (!swipeActive) return;
+  const t = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0] : null;
+  if (!t) { resetSwipe(); return; }
+
+  const dx = t.clientX - swipeStartX;
+  const dy = t.clientY - swipeStartY;
+  const dt = Math.max(1, performance.now() - swipeStartT);
+  const vx = Math.abs(dx) / dt; // px/ms
+
+  // Require confident horizontal swipe from the edge.
+  const distOk = Math.abs(dx) >= 56;
+  const velOk = vx >= 0.35 && Math.abs(dx) >= 38;
+  const verticalOk = Math.abs(dy) <= 44;
+  const directionOk =
+    (swipeEdge === "left" && dx > 0) ||
+    (swipeEdge === "right" && dx < 0);
+
+  if ((distOk || velOk) && verticalOk && directionOk) {
+    if (swipeEdge === "left") modalNextBtn.click();
+    else modalPrevBtn.click();
+  }
+  resetSwipe();
+}
+
+// Bind touch handlers with passive:false so we can preventDefault when needed.
+modalBoxEl.addEventListener("touchstart", onTouchStart, { passive: true });
+modalBoxEl.addEventListener("touchmove", onTouchMove, { passive: false });
+modalBoxEl.addEventListener("touchend", onTouchEnd, { passive: true });
+modalBoxEl.addEventListener("touchcancel", resetSwipe, { passive: true });
+
+// ── QUIZ RUNTIME ──
+const quizOverlayEl = document.getElementById("quiz-overlay");
+const quizBackdropEl = document.getElementById("quiz-backdrop");
+const quizCloseEl = document.getElementById("quiz-close");
+const quizProgressEl = document.getElementById("quiz-progress");
+const quizQuestionEl = document.getElementById("quiz-question");
+const quizChoicesEl = document.getElementById("quiz-choices");
+const quizConfidenceEl = document.getElementById("quiz-confidence");
+const quizFooterEl = document.getElementById("quiz-footer");
+const quizStartEl = document.getElementById("quiz-start");
+const quizPlayEl = document.getElementById("quiz-play");
+const quizStartCountEl = document.getElementById("quiz-start-count");
+const quizLawListEl = document.getElementById("quiz-law-list");
+const quizStartBtnEl = document.getElementById("quiz-start-btn");
+const quizLinkEl = document.getElementById("quiz-link");
+
+let quizSession = null;
+function handleQuizKeys(e) {
+  if (e.key === "Escape") closeQuiz();
+}
+function showQuizScreen(which) {
+  if (quizStartEl) quizStartEl.hidden = which !== "start";
+  if (quizPlayEl) quizPlayEl.hidden = which !== "play";
+}
+function renderQuizStart() {
+  const seen = loadSeen();
+  const count = seen.size;
+  if (quizStartCountEl) quizStartCountEl.textContent = `${count} of ${LAWS.length} laws visited`;
+  if (quizLawListEl) {
+    quizLawListEl.innerHTML = "";
+    LAWS.forEach(law => {
+      const row = document.createElement("div");
+      row.className = "quiz-law-row" + (seen.has(law.id) ? " seen" : "");
+      row.innerHTML = `<span class="quiz-law-check"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>${law.title}</span>`;
+      quizLawListEl.appendChild(row);
+    });
+  }
+  if (quizStartBtnEl) {
+    quizStartBtnEl.disabled = count === 0;
+    quizStartBtnEl.textContent = count === 0 ? "Open a law to unlock the quiz" : "Start quiz";
+  }
+}
+function openQuiz() {
+  if (!quizOverlayEl) return;
+  quizOverlayEl.classList.add("open");
+  document.body.style.overflow = "hidden";
+  document.addEventListener("keydown", handleQuizKeys);
+  renderQuizStart();
+  showQuizScreen("start");
+}
+function closeQuiz() {
+  if (!quizOverlayEl) return;
+  quizOverlayEl.classList.remove("open");
+  quizSession = null;
+  document.body.style.overflow = "";
+  document.removeEventListener("keydown", handleQuizKeys);
+}
+if (quizBackdropEl) quizBackdropEl.addEventListener("click", closeQuiz);
+if (quizCloseEl) quizCloseEl.addEventListener("click", closeQuiz);
+if (quizLinkEl) quizLinkEl.addEventListener("click", e => { e.preventDefault(); openQuiz(); });
+if (quizStartBtnEl) quizStartBtnEl.addEventListener("click", startReviewQuiz);
+
+function startReviewQuiz() {
+  const questions = buildReviewQuizQuestions(5);
+  if (!questions.length) return;
+  hideReviewPrompt();
+  try { localStorage.setItem(LS.promptShown, "1"); } catch {}
+  quizSession = {
+    questions,
+    idx: 0,
+    pending: null, // { q, selectedChoice, isCorrect }
+    correctCount: 0,
+  };
+  showQuizScreen("play");
+  renderQuizQuestion();
+}
+if (reviewStartBtn) reviewStartBtn.addEventListener("click", () => { hideReviewPrompt(); openQuiz(); });
+
+function renderQuizQuestion() {
+  if (!quizSession) return;
+  const q = quizSession.questions[quizSession.idx];
+  quizSession.pending = null;
+
+  if (quizProgressEl) quizProgressEl.textContent = `Question ${quizSession.idx + 1} of ${quizSession.questions.length}`;
+  if (quizQuestionEl) quizQuestionEl.textContent = q.prompt;
+  if (quizFooterEl) quizFooterEl.textContent = "";
+  if (quizConfidenceEl) {
+    quizConfidenceEl.hidden = true;
+    quizConfidenceEl.querySelectorAll("button").forEach(b => b.disabled = false);
+  }
+
+  if (quizChoicesEl) {
+    quizChoicesEl.innerHTML = "";
+    q.choices.forEach(choice => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "quiz-choice";
+      btn.textContent = choice;
+      btn.addEventListener("click", () => onChooseAnswer(q, choice, btn));
+      quizChoicesEl.appendChild(btn);
+    });
+  }
+}
+
+function onChooseAnswer(q, choice, btnEl) {
+  if (!quizSession || quizSession.pending) return;
+  const isCorrect = choice === q.correct;
+  quizSession.pending = { q, choice, isCorrect };
+  if (isCorrect) quizSession.correctCount += 1;
+
+  // lock choices — but don't reveal correctness until confidence is recorded
+  const buttons = [...quizChoicesEl.querySelectorAll("button.quiz-choice")];
+  buttons.forEach(b => { b.disabled = true; });
+
+  if (quizFooterEl) quizFooterEl.textContent = "";
+  if (quizConfidenceEl) quizConfidenceEl.hidden = false;
+}
+
+function recordAnswerWithConfidence(conf) {
+  if (!quizSession || !quizSession.pending) return;
+  const { q, choice, isCorrect } = quizSession.pending;
+  const stats = loadQStats();
+  const s = stats[q.id] || { attempts: 0, correct: 0, conf: { low: 0, med: 0, high: 0 }, lastAskedAt: 0 };
+  s.attempts = (s.attempts || 0) + 1;
+  s.correct = (s.correct || 0) + (isCorrect ? 1 : 0);
+  s.lastAskedAt = Date.now();
+  s.conf = s.conf || { low: 0, med: 0, high: 0 };
+  s.conf[conf] = (s.conf[conf] || 0) + 1;
+  stats[q.id] = s;
+  saveQStats(stats);
+
+  // now reveal correct/wrong feedback
+  const buttons = [...quizChoicesEl.querySelectorAll("button.quiz-choice")];
+  buttons.forEach(b => {
+    const txt = b.textContent;
+    if (txt === q.correct) b.classList.add("correct");
+    else if (txt === choice && !isCorrect) b.classList.add("wrong");
+  });
+
+  if (quizConfidenceEl) quizConfidenceEl.hidden = true;
+
+  const isLast = quizSession.idx + 1 >= quizSession.questions.length;
+  if (quizFooterEl) {
+    const explain = q.explain ? `<div>${q.explain}</div>` : "";
+    quizFooterEl.innerHTML = `${explain}<button type="button" class="quiz-done-btn" id="quiz-next-btn">${isLast ? "See results" : "Next question"}</button>`;
+    quizFooterEl.querySelector("#quiz-next-btn").addEventListener("click", advanceQuiz);
+  }
+}
+
+function advanceQuiz() {
+  if (!quizSession) return;
+  quizSession.pending = null;
+  quizSession.idx += 1;
+  if (quizSession.idx >= quizSession.questions.length) {
+    const score = `${quizSession.correctCount}/${quizSession.questions.length}`;
+    if (quizProgressEl) quizProgressEl.textContent = `Done`;
+    if (quizQuestionEl) quizQuestionEl.textContent = `Review complete: ${score}`;
+    if (quizChoicesEl) quizChoicesEl.innerHTML = "";
+    if (quizConfidenceEl) quizConfidenceEl.hidden = true;
+    if (quizFooterEl) {
+      quizFooterEl.innerHTML = `<div>Keep reading—future reviews will prioritize anything you missed or haven't seen yet.</div><button type="button" class="quiz-done-btn">Done</button>`;
+      quizFooterEl.querySelector(".quiz-done-btn").addEventListener("click", closeQuiz);
+    }
+    return;
+  }
+  renderQuizQuestion();
+}
+
+if (quizConfidenceEl) {
+  quizConfidenceEl.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-conf]");
+    if (!btn) return;
+    recordAnswerWithConfidence(btn.dataset.conf);
+  });
+}
+
+function handleModalKeys(e) {
+  if (e.key === "Escape") { closeModal(); return; }
+  if (e.key === "ArrowRight") { modalNextBtn.click(); return; }
+  if (e.key === "ArrowLeft")  { modalPrevBtn.click(); return; }
+  if (e.key !== "Tab") return;
+  const box = document.getElementById("modal-box");
+  const focusable = [...box.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled);
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey) {
+    if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+  } else {
+    if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+}
+
+function openModal(law) {
+  const c = CAT_COLORS[law.category] || {bg:"#eee",fg:"#333"};
+  document.getElementById("modal-icon").textContent = law.icon;
+  document.getElementById("modal-num").textContent = `#${String(law.id).padStart(2,"0")}`;
+  const badge = document.getElementById("modal-cat-badge");
+  badge.textContent = law.category;
+  badge.style.background = c.bg;
+  badge.style.color = c.fg;
+  document.getElementById("modal-title").textContent = `${law.icon} ${law.title}`;
+  document.getElementById("modal-tagline").textContent = `"${law.short}"`;
+  document.getElementById("m-long").textContent = law.long;
+  document.getElementById("m-origin").textContent = law.origin;
+  document.getElementById("m-example").textContent = law.example;
+
+  const saSection = document.getElementById("m-seealso-section");
+  const saBtn = document.getElementById("m-seealso-btn");
+  const saLabel = document.getElementById("m-seealso-label");
+  if (law.corollary) {
+    saLabel.textContent = law.corollary;
+    saBtn.onclick = () => {
+      const rel = LAWS.find(l => l.title === law.corollary);
+      if (rel) openModal(rel);
+    };
+    saSection.style.display = "";
+  } else {
+    saSection.style.display = "none";
+  }
+
+  // Ensure modal theme + chevrons are always wired.
+  // (The "enhancements" script later also attempts this by wrapping openModal,
+  // but card click handlers reference this function directly, so we do it here.)
+  const idx = LAWS.findIndex(l => l.id === law.id);
+  const box = document.getElementById("modal-box");
+  box.dataset.cat = law.category;
+  modalPrevBtn.disabled = idx <= 0;
+  modalNextBtn.disabled = idx >= LAWS.length - 1;
+  modalPrevBtn.onclick = () => { if (idx > 0) openModal(LAWS[idx - 1]); };
+  modalNextBtn.onclick = () => { if (idx < LAWS.length - 1) openModal(LAWS[idx + 1]); };
+  if (modalPrevTitleBtn && modalNextTitleBtn) {
+    modalPrevTitleBtn.disabled = modalPrevBtn.disabled;
+    modalNextTitleBtn.disabled = modalNextBtn.disabled;
+    modalPrevTitleBtn.onclick = () => modalPrevBtn.click();
+    modalNextTitleBtn.onclick = () => modalNextBtn.click();
+  }
+  showMobileCounter(idx);
+  maybeShowSwipeHint();
+
+  // Track learning session and prompt review after 3 unique laws visited
+  try {
+    const seen = loadSeen();
+    const before = seen.size;
+    seen.add(law.id);
+    if (seen.size !== before) saveSeen(seen);
+    const alreadyPrompted = localStorage.getItem(LS.promptShown) === "1";
+    if (!alreadyPrompted && seen.size >= 3) showReviewPrompt();
+  } catch {
+    // ignore storage failures
+  }
+
+  document.getElementById("modal-box").scrollTop = 0;
+  overlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+  document.addEventListener("keydown", handleModalKeys);
+  setTimeout(() => document.getElementById("modal-close").focus(), 50);
+}
+
+function closeModal() {
+  overlay.classList.remove("open");
+  document.body.style.overflow = "";
+  document.removeEventListener("keydown", handleModalKeys);
+  if (mobileHintEl) mobileHintEl.classList.remove("show");
+  if (mobileCounterEl) mobileCounterEl.classList.remove("show");
+  resetSwipe();
+}
+
+document.getElementById("modal-close").addEventListener("click", closeModal);
+document.getElementById("modal-overlay").addEventListener("click", (e) => {
+  const box = document.getElementById("modal-box");
+  const prev = document.getElementById("modal-prev");
+  const next = document.getElementById("modal-next");
+  if (!box.contains(e.target) && !prev.contains(e.target) && !next.contains(e.target)) {
+    closeModal();
+  }
+});
+
+// ── INIT ──
+document.getElementById("stat-laws").textContent = LAWS.length;
+document.getElementById("stat-cats").textContent = CATS.length - 1;
+renderGrid();
+</script>
+
+<!-- ── ENHANCEMENTS (dark mode, filter divider, modal category band) ── -->
+<script>
+(function() {
+  // ── TABLE OF CONTENTS ──
+  const tocOverlay = document.getElementById('toc-overlay');
+  const tocBody = document.getElementById('toc-body');
+
+  function buildToc() {
+    const cats = ["Strategy","Discovery","Execution","Metrics","Leadership","GTM","Process","Users"];
+    tocBody.innerHTML = cats.map(cat => {
+      const laws = LAWS.filter(l => l.category === cat);
+      const fg = `var(--${cat.toLowerCase()}-fg)`;
+      const bg = `var(--${cat.toLowerCase()}-bg)`;
+      return `
+        <div class="toc-category">
+          <div class="toc-category-header">
+            <span class="toc-category-label" style="background:${bg};color:${fg}">${cat}</span>
+            <span class="toc-category-count">${laws.length} laws</span>
+          </div>
+          <ul class="toc-list">
+            ${laws.map(law => `
+              <li>
+                <button class="toc-item" data-id="${law.id}">
+                  <span class="toc-num">#${String(law.id).padStart(2,'0')}</span>
+                  <span class="toc-item-inner">
+                    <div class="toc-title">${law.title}</div>
+                    <div class="toc-short">${law.short}</div>
+                  </span>
+                </button>
+              </li>`).join('')}
+          </ul>
+        </div>`;
+    }).join('');
+
+    tocBody.querySelectorAll('.toc-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const law = LAWS.find(l => l.id === parseInt(btn.dataset.id));
+        if (law) { closeToc(); openModal(law); }
+      });
+    });
+  }
+
+  function openToc() {
+    buildToc();
+    tocOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('toc-close').focus();
+    document.addEventListener('keydown', tocKeyHandler);
+  }
+
+  function closeToc() {
+    tocOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', tocKeyHandler);
+  }
+
+  function tocKeyHandler(e) { if (e.key === 'Escape') closeToc(); }
+
+  document.getElementById('toc-link').addEventListener('click', e => { e.preventDefault(); openToc(); });
+  document.getElementById('toc-close').addEventListener('click', closeToc);
+  document.getElementById('toc-backdrop').addEventListener('click', closeToc);
+
+  // Dark mode persistence
+  const saved = localStorage.getItem('lopm-theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+
+  // Inject dark mode toggle into nav
+  const nav = document.querySelector('nav');
+  const toggle = document.createElement('button');
+  toggle.id = 'dark-toggle';
+  toggle.setAttribute('aria-label', 'Toggle dark mode');
+  toggle.innerHTML = `
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  `;
+  toggle.addEventListener('click', toggleDark);
+  nav.appendChild(toggle);
+
+  // Filter divider after "All"
+  requestAnimationFrame(() => {
+    const allBtn = document.querySelector('.filter-btn[data-cat="All"]');
+    if (allBtn) {
+      const div = document.createElement('div');
+      div.className = 'filter-divider';
+      allBtn.insertAdjacentElement('afterend', div);
+    }
+  });
+
+  // Patch openModal to set data-cat on modal-box and drive prev/next
+  if (typeof openModal === 'function') {
+    const _orig = openModal;
+    window.openModal = function(law) {
+      _orig(law);
+      const idx = LAWS.findIndex(l => l.id === law.id);
+      document.getElementById('modal-box').dataset.cat = law.category;
+
+      const prevBtn = document.getElementById('modal-prev');
+      const nextBtn = document.getElementById('modal-next');
+      prevBtn.disabled = idx <= 0;
+      nextBtn.disabled = idx >= LAWS.length - 1;
+      prevBtn.onclick = () => { if (idx > 0) openModal(LAWS[idx - 1]); };
+      nextBtn.onclick = () => { if (idx < LAWS.length - 1) openModal(LAWS[idx + 1]); };
+
+      // sync footer accent color
+      document.querySelector('footer').style.borderTopColor =
+        getComputedStyle(document.documentElement).getPropertyValue('--' + law.category.toLowerCase() + '-fg').trim() || '';
+    };
+  }
+
+  // Tweaks panel — fab toggles tray open/closed
+  document.getElementById('tweaks-fab').addEventListener('click', () => {
+    document.getElementById('tweaks-panel').classList.toggle('open');
+  });
+  // Close tray if clicking outside
+  document.addEventListener('click', e => {
+    const panel = document.getElementById('tweaks-panel');
+    if (panel.classList.contains('open') && !panel.contains(e.target)) {
+      panel.classList.remove('open');
+    }
+  });
+
+  window.addEventListener('message', e => {
+    if (e.data && e.data.type === '__activate_edit_mode') {
+      document.getElementById('tweaks-panel').style.display = 'flex';
+      document.getElementById('tweaks-panel').style.flexDirection = 'column';
+      document.getElementById('tweaks-panel').style.alignItems = 'flex-end';
+    }
+    if (e.data && e.data.type === '__deactivate_edit_mode') {
+      document.getElementById('tweaks-panel').style.display = 'none';
+      document.getElementById('tweaks-panel').classList.remove('open');
+    }
+  });
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+  // Sync tweak toggle states with current settings
+  requestAnimationFrame(() => {
+    const darkToggle = document.getElementById('tweak-dark');
+    if (darkToggle && document.documentElement.dataset.theme === 'dark') {
+      darkToggle.classList.add('on');
+    }
+  });
+})();
+
+function toggleDark() {
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  document.documentElement.dataset.theme = isDark ? '' : 'dark';
+  localStorage.setItem('lopm-theme', isDark ? '' : 'dark');
+  const tweakBtn = document.getElementById('tweak-dark');
+  if (tweakBtn) tweakBtn.classList.toggle('on', !isDark);
+}
+
+function setDensity(val) {
+  document.querySelector('.grid').style.gridTemplateColumns = `repeat(auto-fill, minmax(${val}px, 1fr))`;
+}
+
+function toggleDeco() {
+  const btn = document.getElementById('tweak-deco');
+  btn.classList.toggle('on');
+  const hero = document.querySelector('.hero');
+  const isOn = btn.classList.contains('on');
+  hero.style.setProperty('--deco-opacity', isOn ? '0.7' : '0');
+  // toggle ::after via class
+  hero.classList.toggle('no-deco', !isOn);
+}
+</script>
+<style>
+  .hero.no-deco::after { display: none; }
+</style>
+</body>
+</html>
